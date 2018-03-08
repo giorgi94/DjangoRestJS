@@ -86,9 +86,9 @@ if IS_LOCALHOST:
 
 # GraphQL
 
-# GRAPHENE = {
-#     'SCHEMA': 'app.schema.schema'  # Where your Graphene schema lives
-# }
+GRAPHENE = {
+    'SCHEMA': 'apps.serializers.schema.schema'
+}
 
 
 ROOT_URLCONF = '%s.urls' % PROJECT_NAME
