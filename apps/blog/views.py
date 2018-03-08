@@ -2,9 +2,9 @@ import re
 import json
 import pytz
 import requests
-from django.utils.dateparse import parse_datetime
+
 from django.utils.html import strip_tags
-from aide.clean_up_html import sanitize_html
+
 from django.shortcuts import (
     render, redirect, reverse,
     get_object_or_404
@@ -22,8 +22,17 @@ from django.utils import timezone as tz
 from django.contrib.sites.shortcuts import get_current_site
 
 
+class IndexView(generic.TemplateView):
+    template_name = 'home.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        return context
+
+
 class BlogView(generic.TemplateView):
-    template_name = 'pages/index.html'
+    template_name = 'home.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

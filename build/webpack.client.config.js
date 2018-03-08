@@ -14,8 +14,8 @@ var entry = {
     admin: './src/js/admin.js',
 }
 
-var hash = NODE_ENV === 'development' ? 'dev' : gHash(20, 'webpack');
-
+var isdev = NODE_ENV === 'development'
+var hash = isdev ? 'dev' : gHash(20, 'webpack');
 
 var clientConfig = merge(baseConfig, {
     context: PATH,
@@ -23,7 +23,7 @@ var clientConfig = merge(baseConfig, {
     target: 'web',
     entry,
     output: {
-        path: path.join(PATH, 'dist'),
+        path: isdev ? path.join(PATH, 'dist') : path.join(PATH, 'static'),
         publicPath: '/static/',
         filename: `js/[name].bundle.${hash}.js`,
         chunkFilename: `chunk/[id].bundle.${hash}.js`,

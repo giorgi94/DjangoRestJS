@@ -5,12 +5,15 @@ from django.contrib.sitemaps.views import sitemap
 from .feed import *
 from .views import *
 
+
+app_sitemaps = "sitemaps"
+
 urlpatterns = [
-    path('feed', BlogFeed(), name="feed"),
+    path('feed.xml', BlogFeed(), name="feed"),
     path('<str:section>.xml', sitemap,
          {
              'sitemaps': {
-                 'articles': BlogSitemap,
+                 'blogs': BlogSitemap,
                  # 'tags': TagSitemap,
                  # 'authors': AuthorSitemap,
              }

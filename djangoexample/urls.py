@@ -15,6 +15,7 @@ urlpatterns = [
 
     # path('graphql', GraphQLView.as_view(graphiql=True)),
 
+    path('', include('apps.blog.urls')),
 
     path('admin/', admin.site.urls),
     path('i18n/', include('django.conf.urls.i18n')),

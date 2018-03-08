@@ -10,7 +10,7 @@
 
 tinymceConfig =
     selector: 'textarea[rich-editor="true"]'
-    height: 400
+    height: 300
     paste_as_text: true
     force_p_newlines: true
     invalid_elements: 'br,div'
@@ -23,9 +23,9 @@ tinymceConfig =
         "textcolor colorpicker"
     ]
 
-    # toolbar: "insertfile undo redo | styleselect | forecolor backcolor | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link media image | browse | fullscreen"
+    toolbar: "insertfile undo redo | styleselect | forecolor backcolor | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link media image | browse | fullscreen"
 
-    toolbar: "insertfile undo redo | styleselect | forecolor backcolor | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link | browse | fullscreen"
+    # toolbar: "insertfile undo redo | styleselect | forecolor backcolor | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link | browse | fullscreen"
 
     image_caption: true
     relative_urls: false
@@ -37,14 +37,12 @@ tinymceConfig =
 
 
     setup: (editor) ->
-
-        ###
         editor.addButton 'browse',
             title: 'Insert files',
             icon: 'browse',
             onclick: ->
-                fileBrowserCallback 'id_content_ifr', 'files', 'type', window
-        ###
+                # fileBrowserCallback 'id_content_ifr', 'files', 'type', window
+                console.log 'fileBrowserCallback'
 
         editor.on 'SaveContent', (event) ->
             event.content = event.content

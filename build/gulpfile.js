@@ -67,7 +67,7 @@ gulp.task('pug', () => {
 
 
 gulp.task('sass', () => {
-    var hash = NODE_ENV === 'development' ? 'dev' : gHash(20, 'gulp');
+    var hash = isdev ? 'dev' : gHash(20, 'gulp');
 
     gulp.src(joinpath('dist/css/*'))
         .pipe(clean({force: true}))
