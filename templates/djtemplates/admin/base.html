@@ -1,0 +1,26 @@
+{% extends 'admin/base.html' %}
+
+{% block responsive %}
+    {{block.super}}
+    {# <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.0/semantic.min.css"> #}
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.0/components/table.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/admin.dev.css">
+{% endblock %}
+
+
+{% block footer %}
+    {{block.super}}
+
+
+    {# <script type="text/javascript" scr="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.0/semantic.min.js"></script> #}
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.7.9/tinymce.min.js"></script>
+
+
+
+    <script type="text/javascript" src="/static/js/vendor.bundle.dev.js"></script>
+    {# <script type="text/javascript" src="/static/js/common.bundle.dev.js"></script> #}
+    <script type="text/javascript" src="/static/js/admin.bundle.dev.js"></script>
+
+{% endblock %}

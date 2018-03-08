@@ -1,0 +1,27 @@
+/__pycache__/
+*.py[cod]
+*$py.class
+*.sqlite3
+*.zip
+
+
+.lhistory
+.bash_history
+uwsgi_logs.txt
+
+build/hash/
+dist/
+static/
+media/
+templates/jinja2/
+
+
+activate
+# envinfo.py
+
+.DS_Store
+
+# node files
+node_modules/
+node_modules
+npm-debug.log

@@ -1,0 +1,49 @@
+{
+  "scripts": {
+    "js": "cross-env NODE_ENV=production webpack --config build/webpack.client.config.js -p --hide-modules",
+    "sass": "cross-env NODE_ENV=production gulp --gulpfile build/gulpfile.js sass",
+    "pug": "gulp --gulpfile build/gulpfile.js pug",
+    "minify": "cross-env NODE_ENV=production gulp --gulpfile build/gulpfile.js minify",
+    "build/js": "webpack --config build/webpack.client.config.js -d --hide-modules",
+    "build/sass": "gulp --gulpfile build/gulpfile.js sass",
+    "build/pug": "gulp --gulpfile build/gulpfile.js pug",
+    "build/min": "gulp --gulpfile build/gulpfile.js minify",
+    "watch/js": "webpack --config build/webpack.client.config.js -d -w --hide-modules",
+    "watch/sass": "gulp --gulpfile build/gulpfile.js watch/sass",
+    "watch/pug": "gulp --gulpfile build/gulpfile.js watch/pug",
+    "watch": "gulp --gulpfile build/gulpfile.js watch"
+  },
+  "dependencies": {
+    "axios": "^0.17.1",
+    "cross-env": "^5.1.3",
+    "pug": "^2.0.0-rc.4"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "coffee-loader": "^0.9.0",
+    "coffeescript": "^2.0.2",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^4.1.0",
+    "gulp-clean": "^0.4.0",
+    "gulp-connect": "^5.5.0",
+    "gulp-fontmin": "^0.7.4",
+    "gulp-if": "^2.0.2",
+    "gulp-imagemin": "^4.1.0",
+    "gulp-livereload": "^3.8.1",
+    "gulp-pug": "^3.3.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^3.1.0",
+    "gulp-sourcemaps": "^2.6.4",
+    "node-sass": "^4.5.3",
+    "progress-bar-webpack-plugin": "^1.10.0",
+    "webpack": "^3.6.0",
+    "webpack-cleanup-plugin": "^0.5.1",
+    "webpack-dev-middleware": "^1.12.0",
+    "webpack-hot-middleware": "^2.19.1",
+    "webpack-merge": "^4.1.0"
+  }
+}
