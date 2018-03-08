@@ -25,10 +25,11 @@ class Blog(AbstractTime):
     is_pub = models.BooleanField(_('Publish'), default=True)
 
     @staticmethod
-    def active_blogs():
+    def filter_blogs(**kwargs):
         return Blog.objects.filter(
             is_pub=True,
-            pub_date__lte=tz.now()
+            # pub_date__lte=tz.now(),
+            **kwargs
         )
 
     def get_absolute_url(self):

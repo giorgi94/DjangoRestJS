@@ -9,7 +9,7 @@ class BlogFeed(Feed):
     link = 'http://django.example.com'
 
     def items(self):
-        return Blog.active_blogs()[:20]
+        return Blog.filter_blogs()[:20]
 
     def item_title(self, item):
         return item.title

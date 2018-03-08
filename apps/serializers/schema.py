@@ -1,25 +1,47 @@
-import graphene
+from graphene import (
+    relay, ObjectType, Schema,
+    Int, String, JSONString
+)
 from graphene_django.types import DjangoObjectType
+from graphene_django.filter import DjangoFilterConnectionField
 
 from apps.blog.models import Blog
 
 
-class BlogObjectType(DjangoObjectType):
+class BlogNode(DjangoObjectType):
+
+    pk = Int()
+
+    def resolve_pk(self, info, **kwargs):
+        return self.pk
 
     class Meta:
         model = Blog
+        filter_fields = {
+            'id': ['exact'],
+            'title': ['exact', 'icontains'],
+            'content': ['exact', 'icontains'],
+            'abstract': ['exact', 'icontains'],
+            'abstract': ['exact', 'icontains'],
+        }
+        interfaces = (relay.Node, )
 
 
-class QueryType(graphene.ObjectType):
-    name = "Query"
-    description = "..."
+class BlogQuery:
+    blog = relay.Node.Field(BlogNode)
+    all_blogs = DjangoFilterConnectionField(BlogNode)
 
-    blogs = graphene.List(BlogObjectType)
+    # def resolve_all_blogs(self, info, **kwargs):
+    #     # que
+    #     print(kwargs)
+    #     return Blog.objects.filter()
 
-    def resolve_blogs(self, info, **kwargs):
-        return Blog.active_blogs()
+
+class Query(BlogQuery, ObjectType):
+    pass
 
 
-schema = graphene.Schema(
-    query=QueryType
-)
+schema = Schema(query=Query)
+
+
+# json.dumps(schema.execute('{ blogs { id title alias }  }').data, ensure_ascii=False)

@@ -10,7 +10,7 @@ class BlogSitemap(Sitemap):
     limit = 5  # per page limit items, ?p=1
 
     def items(self):
-        objects = Blog.active_blogs()
+        objects = Blog.filter_blogs()
         return objects
 
     def lastmod(self, obj):

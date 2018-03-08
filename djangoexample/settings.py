@@ -24,8 +24,9 @@ INSTALLED_APPS = [
     'django.contrib.sites',
 
     'django_jinja',
-    'rest_framework',
+    # 'rest_framework',
     'graphene_django',
+    'django_filters',
 
     'apps.user',
     'apps.blog',
@@ -64,7 +65,7 @@ if DEBUG and DEBUG_TOOLS:
     ]
 
 # Django Rest Framework
-
+'''
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
@@ -82,7 +83,7 @@ REST_FRAMEWORK = {
 if IS_LOCALHOST:
     REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'].append(
         'rest_framework.renderers.BrowsableAPIRenderer')
-
+'''
 
 # GraphQL
 
