@@ -1,40 +1,5 @@
-from graphene import (
-    relay, ObjectType, Schema,
-    Int, String, JSONString
-)
-from graphene_django.types import DjangoObjectType
-from graphene_django.filter import DjangoFilterConnectionField
-
-from apps.blog.models import Blog
-
-
-class BlogNode(DjangoObjectType):
-
-    pk = Int()
-
-    def resolve_pk(self, info, **kwargs):
-        return self.pk
-
-    class Meta:
-        model = Blog
-        filter_fields = {
-            'id': ['exact'],
-            'title': ['exact', 'icontains'],
-            'content': ['exact', 'icontains'],
-            'abstract': ['exact', 'icontains'],
-            'abstract': ['exact', 'icontains'],
-        }
-        interfaces = (relay.Node, )
-
-
-class BlogQuery:
-    blog = relay.Node.Field(BlogNode)
-    all_blogs = DjangoFilterConnectionField(BlogNode)
-
-    # def resolve_all_blogs(self, info, **kwargs):
-    #     # que
-    #     print(kwargs)
-    #     return Blog.objects.filter()
+from graphene import ObjectType, Schema
+from apps.blog.schema import BlogQuery
 
 
 class Query(BlogQuery, ObjectType):
@@ -43,5 +8,27 @@ class Query(BlogQuery, ObjectType):
 
 schema = Schema(query=Query)
 
-
-# json.dumps(schema.execute('{ blogs { id title alias }  }').data, ensure_ascii=False)
+"""
+json.dumps(schema.execute('''
+{
+  allBlogs {
+    edges {
+      node {
+        pk
+        alias
+        title
+        pubDate
+        isPub
+      }
+      cursor
+    }
+    pageInfo {
+      startCursor
+      endCursor
+      hasNextPage
+      hasPreviousPage
+    }
+  }
+}
+''').data, ensure_ascii=False)
+"""
