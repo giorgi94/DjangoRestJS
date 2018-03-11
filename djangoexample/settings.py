@@ -88,7 +88,7 @@ if IS_LOCALHOST:
 # GraphQL
 
 GRAPHENE = {
-    'SCHEMA': 'apps.serializers.schema.schema'
+    'SCHEMA': 'apps.graphQL.schema.schema'
 }
 
 
