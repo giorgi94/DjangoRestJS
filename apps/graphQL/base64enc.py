@@ -17,10 +17,22 @@ def decode(e):
         return None
 
 
-def cursor_page(page, per_page):
-    first = per_page
-    after = encode('arrayconnection:' + str(page * first - 1))
-    return (first, after)
+def page_to_cursor(per_page, page):
+    try:
+        if page == 1:
+            return {
+                'first': per_page,
+                'after': ""
+            }
+
+        pg = (page - 1) * per_page - 1
+
+        return {
+            'first': per_page,
+            'after': encode('arrayconnection:%d' % pg)
+        }
+    except:
+        return None
 
 
 '''
@@ -43,8 +55,8 @@ first: 5
 
 per_page: 20
 page: 1
-first:per_page, after: arrayconnection:per_page-1
+first:per_page, after: ""
 page: 2
-first:per_page, after: arrayconnection:2per_page-1
+first:per_page, after: arrayconnection:per_page-1
 
 '''
