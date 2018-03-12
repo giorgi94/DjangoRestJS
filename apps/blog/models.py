@@ -1,3 +1,5 @@
+import datetime as dt
+
 from django.db import models
 from django.utils import timezone as tz
 from django.contrib.sites.models import Site
@@ -12,7 +14,16 @@ from apps.user.abstract_models import AbstractTime
 from django.core.validators import MaxLengthValidator
 
 
+def default_time_now():
+    return dt.datetime.now().time()
+
+
+def default_date_now():
+    return dt.datetime.now().date()
+
+
 class Blog(AbstractTime):
+    user = models.ForeignKey('user.User', on_delete=models.SET_NULL, null=True)
 
     title = models.CharField(verbose_name=_("title"), max_length=200, null=True)
     alias = models.CharField(verbose_name=_("alias"), max_length=250, null=True)
@@ -21,7 +32,9 @@ class Blog(AbstractTime):
                                 validators=[MaxLengthValidator(400)])
     content = models.TextField(_('Content'), null=True)
 
-    pub_date = models.DateTimeField(_('Publish Date'), default=tz.now)
+    pub_date = models.DateField(_('Publish Date'), default=default_date_now)
+    pub_time = models.TimeField(_('Publish Time'), default=default_time_now)
+
     is_pub = models.BooleanField(_('Publish'), default=True)
 
     @staticmethod
