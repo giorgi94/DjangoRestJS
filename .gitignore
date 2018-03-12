@@ -15,6 +15,7 @@ static/
 media/
 templates/jinja2/
 
+migrations
 
 activate
 # envinfo.py
