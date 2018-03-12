@@ -23,7 +23,8 @@ def default_date_now():
 
 
 class Blog(AbstractTime):
-    user = models.ForeignKey('user.User', on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey('user.User', verbose_name=_('User'),
+                             on_delete=models.SET_NULL, null=True)
 
     title = models.CharField(verbose_name=_("title"), max_length=200, null=True)
     alias = models.CharField(verbose_name=_("alias"), max_length=250, null=True)
@@ -57,6 +58,25 @@ class Blog(AbstractTime):
         verbose_name_plural = _('Blogs')
 
 
+class Comment(AbstractTime):
+    user = models.ForeignKey('user.User', verbose_name=_('User'),
+                             on_delete=models.CASCADE, null=True)
+    blog = models.ForeignKey('blog.Blog', verbose_name=_('Blog'),
+                             on_delete=models.CASCADE, null=True)
+    content = models.TextField(_('content'), null=True)
+
+    def get_absolute_url(self):
+        return reverse('blog:blog', kwargs={
+            'pk': self.blog.pk,
+            'alias': self.blog.alias,
+        }) + '#comment-' + self.pk
+
+    class Meta:
+        ordering = ['-pk']
+        verbose_name = _('Comment')
+        verbose_name_plural = _('Comments')
+
+
 from .receivers import *
 
-post_save.connect(save_blog, sender=Blog)
+post_save.connect(set_alias, sender=Blog)

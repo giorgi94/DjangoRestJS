@@ -1,9 +1,10 @@
 from graphene import ObjectType, Schema
-from apps.blog.schema import BlogQuery
+from apps.blog.schema import BlogQuery, CommentQuery
 from apps.user.schema import UserQuery
 
 
-class Query(UserQuery, BlogQuery, ObjectType):
+class Query(CommentQuery, UserQuery, BlogQuery,
+            ObjectType):
     pass
 
 

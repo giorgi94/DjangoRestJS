@@ -36,6 +36,10 @@ def page_to_cursor(per_page, page):
 
 
 '''
+##JS
+btoa('BlogNode:23') = "QmxvZ05vZGU6MjM="
+atob('QmxvZ05vZGU6MjM=') = "BlogNode:23"
+
 import base64
 #id
 base64.urlsafe_b64encode('BlogNode:2'.encode()).decode()

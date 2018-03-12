@@ -1,7 +1,7 @@
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 from django.contrib import admin
-from .models import Blog
+from .models import Blog, Comment
 from .forms import BlogForm
 
 
@@ -10,4 +10,7 @@ class BlogAdmin(admin.ModelAdmin):
     form = BlogForm
     exclude = ['alias']
 
-    # admin.site.register(BLog)
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    pass
