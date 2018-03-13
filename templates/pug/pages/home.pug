@@ -1,17 +1,7 @@
 extends ../base
-include ../mixins/article
 
 block content
     h1 This is my content
     
-    | {% for item in items %}
-    ul
-        li {{item}}
-    | {% endfor %}
-
-    div.mymixin
-        - var index = 0
-        for i in Array(10)
-            - index += 1
-            +article('Hello world')
-                p #{index}
+    
+    p hello

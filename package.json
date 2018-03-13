@@ -1,17 +1,16 @@
 {
   "scripts": {
-    "js": "cross-env NODE_ENV=production webpack --config build/webpack.client.config.js -p --hide-modules",
+    "js": "cross-env NODE_ENV=production webpack --config build/webpack.config.js -p --hide-modules",
     "sass": "cross-env NODE_ENV=production gulp --gulpfile build/gulpfile.js sass",
     "pug": "gulp --gulpfile build/gulpfile.js pug",
-    "minify": "cross-env NODE_ENV=production gulp --gulpfile build/gulpfile.js minify",
-    "build/js": "webpack --config build/webpack.client.config.js -d --hide-modules",
+    "minify": "gulp --gulpfile build/gulpfile.js minify",
+    "build/js": "webpack --config build/webpack.config.js -d --hide-modules",
     "build/sass": "gulp --gulpfile build/gulpfile.js sass",
-    "build/pug": "gulp --gulpfile build/gulpfile.js pug",
-    "build/min": "gulp --gulpfile build/gulpfile.js minify",
-    "watch/js": "webpack --config build/webpack.client.config.js -d -w --hide-modules",
-    "watch/sass": "gulp --gulpfile build/gulpfile.js watch/sass",
-    "watch/pug": "gulp --gulpfile build/gulpfile.js watch/pug",
-    "watch": "gulp --gulpfile build/gulpfile.js watch"
+    "watch/js": "webpack --config build/webpack.config.js -d -w --hide-modules",
+    "watch/sass": "ross-env LIVE_RELOAD=true gulp --gulpfile build/gulpfile.js watch/sass",
+    "watch/pug": "ross-env LIVE_RELOAD=true gulp --gulpfile build/gulpfile.js watch/pug",
+    "livereload": "cross-env LIVE_RELOAD=true gulp --gulpfile build/gulpfile.js livereload",
+    "gulp": "gulp --gulpfile build/gulpfile.js"
   },
   "dependencies": {
     "axios": "^0.17.1",
@@ -42,6 +41,7 @@
     "progress-bar-webpack-plugin": "^1.10.0",
     "webpack": "^3.6.0",
     "webpack-cleanup-plugin": "^0.5.1",
+    "webpack-livereload-plugin": "^2.0.0",
     "webpack-merge": "^4.1.0"
   }
 }

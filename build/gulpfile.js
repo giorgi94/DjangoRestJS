@@ -1,80 +1,86 @@
-const path = require('path');
+var path = require('path');
+var make_hash = require('./hash-maker');
 
 var gulp = require('gulp'),
     gulpif = require('gulp-if'),
     clean = require('gulp-clean'),
     rename = require('gulp-rename'),
-    imagemin = require('gulp-imagemin'),
-    fontmin = require('gulp-fontmin'),
-    pug = require('gulp-pug'),
-    sass = require('gulp-sass'),
-    sourcemaps = require('gulp-sourcemaps'),
-    autoprefixer = require('gulp-autoprefixer'),
     connect = require('gulp-connect'),
     livereload = require('gulp-livereload');
 
-const { gHash } = require('./hashGenerate');
+var imagemin = require('gulp-imagemin'),
+    fontmin = require('gulp-fontmin'),
+    sourcemaps = require('gulp-sourcemaps'),
+    autoprefixer = require('gulp-autoprefixer');
 
-const NODE_ENV = process.env.NODE_ENV || 'development';
-const PATH = path.join(__dirname, '..')
 
-var joinpath = (p) => {
+var pug = require('gulp-pug'),
+    sass = require('gulp-sass');
+    // coffee = require('gulp-coffee'),
+    // babel = require('gulp-babel'),
+    // uglify = require('gulp-uglify'),
+
+
+var PATH = path.join(__dirname, '..')
+var NODE_ENV = process.env.NODE_ENV || 'development';
+
+var LIVE_RELOAD = eval(process.env.LIVE_RELOAD || 'false');
+var LIVE_SERVER = eval(process.env.LIVE_SERVER || 'false');
+
+var isdev = NODE_ENV === 'development'
+var make_sourcemaps = isdev
+
+var abspath = (p) => {
     if(typeof p === 'string') {
         return path.join(PATH, p);
     }
     return p.map((val)=>path.join(PATH, val));
 }
 
-var isdev = NODE_ENV === 'development'
-var make_sourcemaps = isdev
-
 
 // Minify
 
 gulp.task('minify/img', () => {
-    gulp.src(joinpath('assets/img/**/*'))
+    gulp.src(abspath('assets/img/**/*'))
         .pipe(imagemin())
         .pipe(gulpif(isdev,
-            gulp.dest(joinpath('dist/img')),
-            gulp.dest(joinpath('static/img'))
+            gulp.dest(abspath('dist/img')),
+            gulp.dest(abspath('static/img'))
         ))
 })
 
 gulp.task('minify/fonts', () => {
-    gulp.src(joinpath('assets/fonts/**/*'))
+    gulp.src(abspath('assets/fonts/**/*'))
         .pipe(imagemin())
         .pipe(gulpif(isdev,
-            gulp.dest(joinpath('dist/fonts')),
-            gulp.dest(joinpath('static/fonts'))
+            gulp.dest(abspath('dist/fonts')),
+            gulp.dest(abspath('static/fonts'))
         ))
 })
-
-gulp.task('minify', ['minify/img', 'minify/fonts'])
 
 // Pug -> Html
 
 gulp.task('pug', () => {
-    gulp.src(joinpath('templates/pug/pages/*.pug'))
+    gulp.src(abspath('templates/pug/pages/*.pug'))
         .pipe(pug({
             pretty:true
         }))
-        .pipe(gulp.dest(joinpath('templates/jinja2')))
-        .pipe(connect.reload());
+        .pipe(gulp.dest(abspath('templates/jinja2/')))
+        .pipe(gulpif(LIVE_SERVER, connect.reload()))
+        .pipe(gulpif(LIVE_RELOAD, livereload()))
 });
 
 // Styles
 
-
-
 gulp.task('sass', () => {
-    var hash = isdev ? 'dev' : gHash(20, 'gulp');
+    var hash = isdev ? '' : '-' + make_hash(20, 'gulp');
 
-    gulp.src(joinpath('dist/css/*'))
+    gulp.src(abspath('dist/css/*'))
         .pipe(clean({force: true}))
 
-    gulp.src(joinpath('assets/*.sass'))
+    gulp.src(abspath('assets/*.sass'))
         .pipe(rename({
-            suffix: `.${hash}`
+            suffix: hash
         }))
         .pipe(gulpif(make_sourcemaps, sourcemaps.init()))
         .pipe(sass({
@@ -83,36 +89,49 @@ gulp.task('sass', () => {
         .pipe(gulpif(make_sourcemaps, sourcemaps.write()))
         .pipe(autoprefixer('last 2 versions', '> 1%', 'ie 7'))
         .pipe(gulpif(isdev,
-            gulp.dest(joinpath('dist/css/')),
-            gulp.dest(joinpath('static/css/'))
+            gulp.dest(abspath('dist/css/')),
+            gulp.dest(abspath('static/css/'))
         ))
-        .pipe(connect.reload())
+        .pipe(gulpif(LIVE_SERVER, connect.reload()))
+        .pipe(gulpif(LIVE_RELOAD, livereload()))
+});
+
+
+// Scripts
+
+// gulp.task('js', () => {
+//     gulp.src(abspath('src/js/*.js'))
+//         .pipe(gulpif(make_sourcemaps, sourcemaps.init()))
+//         .pipe(babel())
+//         .pipe(gulpif(make_uglify, uglify()))
+//         .pipe(gulpif(make_sourcemaps, sourcemaps.write()))
+//         .pipe(gulp.dest(joinpath('dist/js/')))
+//         .pipe(gulpif(LIVE_SERVER, connect.reload()))
+//         .pipe(gulpif(LIVE_RELOAD, livereload()))
+// });
+
+
+gulp.task('js', () => {
+    gulp.src(abspath('src/js/*.js'))
+        .pipe(gulpif(LIVE_RELOAD, livereload()))
 });
 
 
 
 // Server
 
-gulp.task('build', ['pug', 'sass', 'minify'])
+gulp.task('build', ['pug', 'sass'])
+gulp.task('minify', ['minify/img', 'minify/fonts'])
 
 gulp.task('watch', ['build'], ()=>{
-    gulp.watch(joinpath('templates/pug/**/*.pug'), ['pug'])
-    gulp.watch(joinpath('assets/**/*.sass'), ['sass'])
-})
-
-
-gulp.task('watch/sass', ['sass'], ()=>{
-    gulp.watch(joinpath('assets/**/*.sass'), ['sass'])
-})
-
-gulp.task('watch/pug', ['pug'], ()=>{
-    gulp.watch(joinpath('templates/pug/**/*.pug'), ['pug'])
+    gulp.watch(abspath('templates/pug/**/*.pug'), ['pug'])
+    gulp.watch(abspath('assets/**/*.sass'), ['sass'])
 })
 
 
 gulp.task('connect', ()=>{
     connect.server({
-        root: joinpath([
+        root: abspath([
             'templates/jinja2',
             'dist/',
             'staticfiles/'
@@ -122,5 +141,12 @@ gulp.task('connect', ()=>{
     })
 })
 
+
+gulp.task('livereload', ()=>{
+    livereload.listen();
+    gulp.watch(abspath('assets/**/*.sass'), ['sass'])
+    gulp.watch(abspath('templates/pug/**/*.pug'), ['pug'])
+    gulp.watch(abspath('src/**/*'), ['js'])
+})
 
 gulp.task('default', ['connect', 'watch'])

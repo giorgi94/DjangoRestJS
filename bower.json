@@ -1,0 +1,14 @@
+{
+  "name": "djangoexample",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "semantic": "semantic-ui#^2.3.0",
+    "semantic-ui-calendar": "^0.0.8"
+  }
+}
