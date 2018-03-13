@@ -14,12 +14,6 @@ class BlogNode(DjangoObjectType):
     pk = Int()
     user = Field(UserNode)
 
-    def resolve_pk(self, info, **kwargs):
-        return self.pk
-
-    def resolve_user(self, info, **kwargs):
-        return self.user
-
     class Meta:
         model = Blog
         filter_fields = {
@@ -37,18 +31,10 @@ class BlogQuery:
 
 
 class CommentNode(DjangoObjectType):
-
+    
+    pk = Int()
     user = Field(UserNode)
     blog = Field(BlogNode)
-
-    def resolve_pk(self, info, **kwargs):
-        return self.pk
-
-    def resolve_user(self, info, **kwargs):
-        return self.user
-
-    def resolve_blog(self, info, **kwargs):
-        return self.blog
 
     class Meta:
         model = Comment

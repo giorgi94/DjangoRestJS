@@ -1,15 +1,14 @@
 {
   "scripts": {
+    "pug": "gulp --gulpfile build/gulpfile.js pug",
     "js": "cross-env NODE_ENV=production webpack --config build/webpack.config.js -p --hide-modules",
     "sass": "cross-env NODE_ENV=production gulp --gulpfile build/gulpfile.js sass",
-    "pug": "gulp --gulpfile build/gulpfile.js pug",
-    "minify": "gulp --gulpfile build/gulpfile.js minify",
-    "build/js": "webpack --config build/webpack.config.js -d --hide-modules",
-    "build/sass": "gulp --gulpfile build/gulpfile.js sass",
-    "watch/js": "webpack --config build/webpack.config.js -d -w --hide-modules",
-    "watch/sass": "ross-env LIVE_RELOAD=true gulp --gulpfile build/gulpfile.js watch/sass",
-    "watch/pug": "ross-env LIVE_RELOAD=true gulp --gulpfile build/gulpfile.js watch/pug",
-    "livereload": "cross-env LIVE_RELOAD=true gulp --gulpfile build/gulpfile.js livereload",
+    "minify": "cross-env NODE_ENV=production gulp --gulpfile build/gulpfile.js minify",
+    "dev/js": "webpack --config build/webpack.config.js -d --hide-modules",
+    "dev/sass": "gulp --gulpfile build/gulpfile.js sass",
+    "dev/minify": "gulp --gulpfile build/gulpfile.js minify",
+    "w/js": "webpack --config build/webpack.config.js -d -w --hide-modules",
+    "w": "gulp --gulpfile build/gulpfile.js watch",
     "gulp": "gulp --gulpfile build/gulpfile.js"
   },
   "dependencies": {
@@ -20,6 +19,7 @@
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
+    "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
@@ -28,11 +28,9 @@
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^4.1.0",
     "gulp-clean": "^0.4.0",
-    "gulp-connect": "^5.5.0",
     "gulp-fontmin": "^0.7.4",
     "gulp-if": "^2.0.2",
     "gulp-imagemin": "^4.1.0",
-    "gulp-livereload": "^3.8.1",
     "gulp-pug": "^3.3.0",
     "gulp-rename": "^1.2.2",
     "gulp-sass": "^3.1.0",
@@ -41,7 +39,7 @@
     "progress-bar-webpack-plugin": "^1.10.0",
     "webpack": "^3.6.0",
     "webpack-cleanup-plugin": "^0.5.1",
-    "webpack-livereload-plugin": "^2.0.0",
-    "webpack-merge": "^4.1.0"
+    "webpack-merge": "^4.1.0",
+    "webpack-watch-livereload-plugin": "0.0.1"
   }
 }

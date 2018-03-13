@@ -12,9 +12,6 @@ class UserNode(DjangoObjectType):
 
     pk = Int()
 
-    def resolve_pk(self, info, **kwargs):
-        return self.pk
-
     class Meta:
         model = User
         filter_fields = {

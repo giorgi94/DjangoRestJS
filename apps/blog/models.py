@@ -38,6 +38,10 @@ class Blog(AbstractTime):
 
     is_pub = models.BooleanField(_('Publish'), default=True)
 
+    @property
+    def attr(self):
+        return "my attr"
+
     @staticmethod
     def filter_blogs(**kwargs):
         return Blog.objects.filter(
