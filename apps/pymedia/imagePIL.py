@@ -29,7 +29,7 @@ def download(url, to='downloads', timeout=5):
         return None
 
 
-def normilize_point(point):
+def normilize_point(point=None):
     try:
         if re.fullmatch('(\(\d{1,2},\d{1,2}\))|(\d{1,2}x\d{1,2})', str(point).replace(' ', '')) is None:
             return self._default_point
@@ -61,20 +61,6 @@ def placeholder(size):
     return 'http://via.placeholder.com/%s' % size
 
 
-def reverse(path, method, size, point):
-    size = imagePIL.normilize_size(size)
-    point = imagePIL.normilize_size(point)
-
-    if size is None or point is None:
-        return None
-
-    filepath, ext = os.path.splitext(path)
-
-    return '__thumbs__/{method}/{size}/{filepath}__{point}.{ext}'.format(
-        method=method, filepath=filepath, ext=ext,
-        point="%dx%d" % point, size="%dx%d" % size)
-
-
 class ImagePIL:
 
     _default_point = (50, 50)
@@ -85,6 +71,12 @@ class ImagePIL:
 
     def set_path(self, path):
         self._path = os.path.abspath(path)
+
+    def get_path(self):
+        return self._path
+
+    def get_point(self):
+        return self._default_point
 
     def set_default_point(self, point):
         self._default_point = normilize_point(point)
@@ -144,11 +136,15 @@ class ImagePIL:
 
         return os.path.join(dirname, '__thumb__', filename)
 
-    def cover(self, size, point, safepath=None):
+    def cover(self, size, point=None, safepath=None):
         try:
             with Image.open(self._path) as img:
                 size = normilize_size(size)
-                point = normilize_point(point)
+
+                if point is None:
+                    point = self._default_point
+                else:
+                    point = normilize_point(point)
 
                 cover_size = self.get_cover_size(img.size, size)
 

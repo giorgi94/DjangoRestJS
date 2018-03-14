@@ -33,6 +33,9 @@ class MediaPIL(ImagePIL):
     MEDIA_URL = MEDIA_URL
 
     def __init__(self, path):
+        self.set_path(path)
+
+    def set_path(self, path):
         self._path = os.path.join(MEDIA_DIR, path)
 
     @staticmethod
@@ -41,7 +44,7 @@ class MediaPIL(ImagePIL):
 
     @staticmethod
     def download(url, to='downloads', timeout=5):
-        to = os.path.join(MEDIA_DIR, to)
+        to = os.path.join(MEDIImagePILA_DIR, to)
         return download(url, to, timeout)
 
     @staticmethod
@@ -53,6 +56,22 @@ class MediaPIL(ImagePIL):
         return os.path.join(MEDIA_DIR, path)
 
 
+class ImgField(MediaPIL):
+
+    def __init__(self, path, point, upload_to):
+        self.set_path(path)
+        self.set_default_point(point)
+        self.upload_to = upload_to
+
+    def to_json(self):
+        return {
+            'path': self.get_path(),
+            'point': self.get_point()
+        }
+
+
 if __name__ == '__main__':
-    pass
-    # MediaPIL.download(url, to=".")
+    # from apps.pymedia.mediaPIL import MediaPIL
+    img = MediaPIL('img.jpg')
+    img.fit((300, 230))
+    img.cover((300, 230), point=(50, 70))

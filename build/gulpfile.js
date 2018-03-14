@@ -67,6 +67,9 @@ gulp.task('pug', () => {
 
 gulp.task('sass', () => {
 
+    gulp.src(abspath('static/css/*'))
+        .pipe(clean({force: true}))
+
     gulp.src(abspath('assets/*.sass'))
         .pipe(rename({
             suffix: hash
