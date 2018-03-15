@@ -1,7 +1,6 @@
 import os
 from .imagePIL import (
-    ImagePIL, download,
-    normilize_point, normilize_size)
+    ImagePIL, download, normilize_size)
 from django.conf import settings
 
 BASE_DIR = settings.BASE_DIR
@@ -15,8 +14,6 @@ def reverse(path, method, size, point=None):
     size = normilize_size(size)
 
     if not point is None:
-        point = normilize_point(point)
-
         return '__thumbs__/{method}/{size}/{filename}__{point}{ext}'.format(
             method=method, filename=filename, ext=ext,
             point="%dx%d" % point, size="%dx%d" % size)
@@ -32,11 +29,17 @@ class MediaPIL(ImagePIL):
     MEDIA_DIR = MEDIA_DIR
     MEDIA_URL = MEDIA_URL
 
-    def __init__(self, path):
-        self.set_path(path)
+    def __init__(self, url, point=(50, 50), quality=90):
+        self.url = url
+        self.set_path(url)
+        self.point = tuple(point)
+        self.quality = quality
 
     def set_path(self, path):
-        self._path = os.path.join(MEDIA_DIR, path)
+        self.path = os.path.join(MEDIA_DIR, path)
+
+    def URL(self):
+        return os.path.join(MEDIA_URL, self.url)
 
     @staticmethod
     def placeholder(size):
@@ -52,22 +55,8 @@ class MediaPIL(ImagePIL):
         return reverse(path, method, size, point)
 
     def safepath_isnull(self, size, method, point=None):
-        path = reverse(self._path, method, size, point)
+        path = reverse(self.path, method, size, point)
         return os.path.join(MEDIA_DIR, path)
-
-
-class ImgField(MediaPIL):
-
-    def __init__(self, path, point, upload_to):
-        self.set_path(path)
-        self.set_default_point(point)
-        self.upload_to = upload_to
-
-    def to_json(self):
-        return {
-            'path': self.get_path(),
-            'point': self.get_point()
-        }
 
 
 if __name__ == '__main__':

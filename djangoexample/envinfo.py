@@ -3,7 +3,7 @@ import os
 DEBUG = True
 
 DEBUG_TOOLS = False
-IS_LOCALHOST = True
+ON_LOCALHOST = True
 
 SITE_ID = 1
 

@@ -29,32 +29,13 @@ def download(url, to='downloads', timeout=5):
         return None
 
 
-def normilize_point(point=None):
-    try:
-        if re.fullmatch('(\(\d{1,2},\d{1,2}\))|(\d{1,2}x\d{1,2})', str(point).replace(' ', '')) is None:
-            return self._default_point
-        else:
-            if type(point) == str:
-                if 'x' in point:
-                    return eval('(' + point.replace('x', ',') + ')')
-                return eval(point)
-            return point
-    except:
-        return self._default_point
-
-
 def normilize_size(size):
-    try:
-        if re.fullmatch('(\(\d+,\d+\))|(\d+x\d+)', str(size).replace(' ', '')) is None:
-            return (10, 10)
-        else:
-            if type(size) == str:
-                if 'x' in size:
-                    return eval('(' + size.replace('x', ',') + ')')
-                return eval(size)
-            return size
-    except:
-        return (10, 10)
+    if type(size) == str:
+        if re.fullmatch('\d+x\d+', size) is None:
+            return None
+        return eval('(' + size.replace('x', ',') + ')')
+    else:
+        return size
 
 
 def placeholder(size):
@@ -63,23 +44,10 @@ def placeholder(size):
 
 class ImagePIL:
 
-    _default_point = (50, 50)
-    _quality = 90
-
-    def __init__(self, path=None):
-        self._path = os.path.abspath(path)
-
-    def set_path(self, path):
-        self._path = os.path.abspath(path)
-
-    def get_path(self):
-        return self._path
-
-    def get_point(self):
-        return self._default_point
-
-    def set_default_point(self, point):
-        self._default_point = normilize_point(point)
+    def __init__(self, path, point=(50, 50), quality=90):
+        self.path = os.path.abspath(path)
+        self.point = point
+        self.quality = quality
 
     def get_cover_size(self, from_size, to_size):
         p = max(
@@ -121,8 +89,8 @@ class ImagePIL:
 
     def safepath_isnull(self, size, method, point=None):
         basename, extension = os.path.splitext(
-            os.path.basename(self._path))
-        dirname = os.path.dirname(self._path)
+            os.path.basename(self.path))
+        dirname = os.path.dirname(self.path)
 
         if point is None:
             filename = (basename + '__{0}'.format(method) +
@@ -138,13 +106,14 @@ class ImagePIL:
 
     def cover(self, size, point=None, safepath=None):
         try:
-            with Image.open(self._path) as img:
+            with Image.open(self.path) as img:
+                if point is None:
+                    point = self.point
+
                 size = normilize_size(size)
 
                 if point is None:
-                    point = self._default_point
-                else:
-                    point = normilize_point(point)
+                    point = self.point
 
                 cover_size = self.get_cover_size(img.size, size)
 
@@ -158,7 +127,7 @@ class ImagePIL:
                     safepath = self.safepath_isnull(size=size, method='cover', point=point)
                 assure_path_exists(safepath)
 
-                img.save(safepath, subsampling=0, quality=self._quality, optimize=True)
+                img.save(safepath, subsampling=0, quality=self.quality, optimize=True)
                 return True
             return False
         except Exception as ex:
@@ -167,7 +136,7 @@ class ImagePIL:
 
     def fit(self, size, safepath=None):
         try:
-            with Image.open(self._path) as img:
+            with Image.open(self.path) as img:
                 size = normilize_size(size)
 
                 fit_size = self.get_fit_size(img.size, size)
@@ -177,7 +146,7 @@ class ImagePIL:
                     safepath = self.safepath_isnull(size=size, method='fit')
                 assure_path_exists(safepath)
 
-                img.save(safepath, subsampling=0, quality=self._quality, optimize=True)
+                img.save(safepath, subsampling=0, quality=self.quality, optimize=True)
 
                 return True
             return False
@@ -190,4 +159,5 @@ if __name__ == '__main__':
 
     img = ImagePIL(os.path.abspath('img.jpg'))
     img.fit((300, 230))
-    img.cover((300, 230), point=(50, 70))
+    img.cover((300, 230), point=(50, 10))
+    img.cover('300x230', point=(50, 10))

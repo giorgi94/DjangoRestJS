@@ -2,27 +2,39 @@ from django import forms
 from django.core import exceptions
 from django.db import models
 import json
-from .mediaPIL import ImgField
+from .mediaPIL import MediaPIL
 
 
 class ImagePILField(models.TextField):
     description = "Image PIL Field"
 
-    def __init__(self, default_path=None, default_point=(50, 50),
+    def __init__(self, url=None, point=(50, 50), quality=90,
                  upload_to=".", *args, **kwargs):
-        self.default_path = default_path
-        self.default_point = default_point
+        self.url = url
+        self.point = point
+        self.quality = quality
         self.upload_to = upload_to
         super().__init__(*args, **kwargs)
 
     def from_db_value(self, value, expression, connection):
-        if value is None:
-            return value
-        return json.loads(value)
-        # return ImgField(value)
+        try:
+            kwargs = json.loads(value)
+            return MediaPIL(**kwargs)
+        except:
+            return None
 
     def get_prep_value(self, value):
-        return json.dumps(value, ensure_ascii=False)
+
+        if not type(value) == dict:
+            value = {}
+
+        kwargs = {
+            'url': self.url,
+            'point': self.point,
+            'quality': self.quality,
+        }
+
+        return json.dumps({**kwargs, **value}, ensure_ascii=False)
 
 
 """
