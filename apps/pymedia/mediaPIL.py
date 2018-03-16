@@ -29,17 +29,20 @@ class MediaPIL(ImagePIL):
     MEDIA_DIR = MEDIA_DIR
     MEDIA_URL = MEDIA_URL
 
-    def __init__(self, url, point=(50, 50), quality=90):
-        self.url = url
-        self.set_path(url)
+    def __init__(self, pathway=None, point=(50, 50), quality=90):
+        self.pathway = pathway
+        self.set_path(pathway)
         self.point = tuple(point)
         self.quality = quality
 
     def set_path(self, path):
         self.path = os.path.join(MEDIA_DIR, path)
 
-    def URL(self):
-        return os.path.join(MEDIA_URL, self.url)
+    @property
+    def url(self):
+        if self.pathway is None:
+            return None
+        return os.path.join(MEDIA_URL, self.pathway)
 
     @staticmethod
     def placeholder(size):
@@ -58,9 +61,19 @@ class MediaPIL(ImagePIL):
         path = reverse(self.path, method, size, point)
         return os.path.join(MEDIA_DIR, path)
 
+    def __setitem__(self, key, value):
+        setattr(self, key, value)
+
+        if key == 'pathway':
+            self.set_path(value)
+
+    def __getitem__(self, key):
+        return getattr(self, key)
+
 
 if __name__ == '__main__':
     # from apps.pymedia.mediaPIL import MediaPIL
     img = MediaPIL('img.jpg')
-    img.fit((300, 230))
-    img.cover((300, 230), point=(50, 70))
+    # img.fit((300, 230))
+    # img.cover((300, 230), point=(50, 70))
+    print(getattr(img, 'path'))

@@ -8,9 +8,9 @@ from .mediaPIL import MediaPIL
 class ImagePILField(models.TextField):
     description = "Image PIL Field"
 
-    def __init__(self, url=None, point=(50, 50), quality=90,
+    def __init__(self, pathway=None, point=(50, 50), quality=90,
                  upload_to=".", *args, **kwargs):
-        self.url = url
+        self.pathway = pathway
         self.point = point
         self.quality = quality
         self.upload_to = upload_to
@@ -29,7 +29,7 @@ class ImagePILField(models.TextField):
             value = {}
 
         kwargs = {
-            'url': self.url,
+            'pathway': self.pathway,
             'point': self.point,
             'quality': self.quality,
         }
