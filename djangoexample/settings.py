@@ -26,7 +26,7 @@ INSTALLED_APPS = [
     'django_jinja',
     # 'rest_framework',
     'graphene_django',
-    'django_filters',
+    # 'django_filters',
 
     'apps.user',
     'apps.blog',

@@ -7,7 +7,6 @@ django-debug-toolbar==1.8
 django-graphiql==0.4.4
 django-jinja==2.4.0
 django-redis==4.9.0
-django-filter==1.1.0
 djangorestframework==3.7.3
 graphene==2.0.1
 graphene-django==2.0.0
