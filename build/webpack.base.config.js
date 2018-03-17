@@ -2,7 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
-const make_hash = require('./hash-maker');
+const make_hash = require('./hashmaker');
 
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
@@ -20,8 +20,8 @@ var config = {
     output: {
         path: isdev ? path.join(PATH, 'dist') : path.join(PATH, 'static'),
         publicPath: '/static/',
-        filename: `js/[name].bundle${hash}.js`,
-        chunkFilename: `chunk/[id].bundle${hash}.js`,
+        filename: `js/[name]${hash}.js`,
+        chunkFilename: `chunk/chunk-[id]${hash}.js`,
     },
     resolve: {
         extensions: ['.js', '.coffee'],

@@ -26,7 +26,7 @@ def validate(tk=None):
 
 
 def validate_view(request):
-    if settings.ON_LOCALHOST:
+    if settings.CONFIG.localhost:
         return True
 
     tk = request.GET.get('token')

@@ -5,13 +5,17 @@ html
             
         title This is my Page
         
-        link(rel="stylesheet" type="text/css" href="/static/css/main.css")
+        link(rel="stylesheet" type="text/css" href="/static/css/main{{HASH.HASH_CSS}}.css")
             
     body
         //- include components/header
         
         block content
             
-        |{{settings.DEBUG}}    
         
-        script(src="http://localhost:35729/livereload.js")
+        |{% if settings.CONFIG.livereload %}    
+        script(type="text/javascript" src="http://localhost:35729/livereload.js")
+        |{% endif %}
+        script(type="text/javascript" src="/static/js/vendor{{HASH.HASH_JS}}.js")
+        //- script(type="text/javascript" src="/static/js/common{{HASH.HASH_JS}}.js")
+        script(type="text/javascript" src="/static/js/main{{HASH.HASH_JS}}.js")

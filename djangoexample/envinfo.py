@@ -3,10 +3,14 @@ import os
 DEBUG = True
 
 DEBUG_TOOLS = False
-ON_LOCALHOST = True
+
+CONFIG = {
+    'localhost': True,
+    'livereload': True
+}
+
 
 SITE_ID = 1
-
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 

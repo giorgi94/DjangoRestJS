@@ -1,5 +1,5 @@
 var path = require('path');
-var make_hash = require('./hash-maker');
+var make_hash = require('./hashmaker');
 
 var gulp = require('gulp'),
     gulpif = require('gulp-if'),
