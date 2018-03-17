@@ -35,8 +35,11 @@ class MediaPIL(ImagePIL):
         self.point = tuple(point)
         self.quality = quality
 
-    def set_path(self, path):
-        self.path = os.path.join(MEDIA_DIR, path)
+    def set_path(self, pathway):
+        if pathway:
+            self.path = os.path.join(MEDIA_DIR, path)
+        else:
+            self.path = None
 
     @property
     def url(self):

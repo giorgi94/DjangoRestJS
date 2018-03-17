@@ -3,7 +3,7 @@ from graphene import (
     Int, String, JSONString, List
 )
 from graphene_django.types import DjangoObjectType
-from apps.graphQL.fields import OrderedDjangoFilterConnectionField
+from apps.graphQL.fields import DjangoConnectionField
 
 from apps.user.models import User
 
@@ -14,16 +14,10 @@ class UserNode(DjangoObjectType):
 
     class Meta:
         model = User
-        filter_fields = {
-            'id': ['exact'],
-            'email': ['exact', 'icontains'],
-            'first_name': ['exact', 'icontains'],
-            'last_name': ['exact', 'icontains'],
-        }
+        filter_fields = []
         interfaces = (relay.Node, )
 
 
 class UserQuery:
     user = relay.Node.Field(UserNode)
-    all_users = OrderedDjangoFilterConnectionField(
-        UserNode, pk=Int(), orderBy=List(of_type=String))
+    all_users = DjangoConnectionField(UserNode)

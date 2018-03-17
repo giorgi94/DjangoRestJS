@@ -18,10 +18,12 @@ class ImagePILField(models.TextField):
 
     def from_db_value(self, value, expression, connection):
         try:
+            if value is None:
+                return MediaPIL()
             kwargs = json.loads(value)
             return MediaPIL(**kwargs)
         except:
-            return None
+            return MediaPIL()
 
     def get_prep_value(self, value):
 
