@@ -10,6 +10,9 @@ from graphene_django.views import GraphQLView
 
 admin.site.site_header = settings.SITE_NAME
 
+
+# handler500 = handler404 = views.page_not_found
+
 urlpatterns = [
     path('sitemaps/', include('djangoexample.sitemaps.urls')),
 

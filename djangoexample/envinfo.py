@@ -6,7 +6,7 @@ DEBUG_TOOLS = False
 
 CONFIG = {
     'localhost': True,
-    'livereload': True
+    'livereload': False
 }
 
 

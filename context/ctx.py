@@ -7,7 +7,7 @@ from django.conf import settings
 
 def get_hash(name):
     HASH = ""
-    if not settings.CONFIG.localhost:
+    if not settings.CONFIG.get('localhost', False):
         path = "{0}/build/hash/{1}-hash.txt".format(
             settings.BASE_DIR, name)
 

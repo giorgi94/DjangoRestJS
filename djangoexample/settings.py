@@ -39,6 +39,8 @@ INSTALLED_APPS += [
 AUTH_USER_MODEL = 'user.User'
 LOGIN_URL = '/'
 
+ROOT_URLCONF = '%s.urls' % PROJECT_NAME
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -48,7 +50,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
 
 if DEBUG and DEBUG_TOOLS:
     INSTALLED_APPS += [
@@ -71,7 +72,7 @@ GRAPHENE = {
 }
 
 
-ROOT_URLCONF = '%s.urls' % PROJECT_NAME
+# Templates
 
 TEMPLATES = [
     {

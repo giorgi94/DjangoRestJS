@@ -14,12 +14,7 @@ from django.views import generic
 from django.conf import settings
 from django.contrib import messages
 
-from datetime import datetime
-from django.utils import timezone as tz
 
-from apps.serializer import getArticleDetailSerializer
-
-Article = apps.get_model('articles', 'Article')
-
-
-
+def page_not_found(request, *args, **kwargs):
+    print(args, kwargs)
+    return HttpResponse('<h1>Page not found</h1>')
