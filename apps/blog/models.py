@@ -23,12 +23,51 @@ def default_date_now():
     return dt.datetime.now().date()
 
 
+class Category(models.Model):
+
+    title = models.CharField(_('Title'), max_length=400, null=True, unique=True)
+    alias = models.CharField(_('Alias'), max_length=400, null=True)
+
+    description = models.TextField(_('Description'), blank=True, null=True)
+    active = models.BooleanField(_('Active'), default=False, blank=True)
+
+    def get_absolute_url(self):
+        return reverse('blog:category', kwargs={'alias': self.alias})
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = _('Category')
+        verbose_name_plural = _('Categories')
+
+
+class Tag(models.Model):
+    name = models.CharField(_('Name'), max_length=35, null=True)
+
+    def get_absolute_url(self):
+        return reverse('blog:tag', kwargs={'name': self.name})
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = _('Tag')
+        verbose_name_plural = _('Tags')
+
+
 class Blog(AbstractTime):
     user = models.ForeignKey('user.User', verbose_name=_('User'),
                              on_delete=models.SET_NULL, null=True)
 
-    title = models.CharField(verbose_name=_("title"), max_length=200, null=True)
-    alias = models.CharField(verbose_name=_("alias"), max_length=250, null=True)
+    category = models.ForeignKey('blog.Category', verbose_name=_('Category'),
+                                 on_delete=models.SET_NULL, null=True)
+
+    tags = models.ManyToManyField('Tag', verbose_name=_('Tags'),
+                                  blank=True, related_name='blogs')
+
+    title = models.CharField(verbose_name=_("Title"), max_length=200, null=True)
+    alias = models.CharField(verbose_name=_("Alias"), max_length=250, null=True)
 
     image = ImagePILField(verbose_name=_("image"), null=True)
 
@@ -87,3 +126,4 @@ class Comment(AbstractTime):
 from .receivers import *
 
 post_save.connect(set_alias, sender=Blog)
+post_save.connect(set_alias, sender=Category)

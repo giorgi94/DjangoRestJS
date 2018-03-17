@@ -22,18 +22,17 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sitemaps',
     'django.contrib.sites',
+]
 
+INSTALLED_APPS += [
+    # 'adminsortable2',
     'django_jinja',
-    # 'rest_framework',
     'graphene_django',
-    # 'django_filters',
+]
 
+INSTALLED_APPS += [
     'apps.user',
     'apps.blog',
-
-
-    # 'adminsortable2',
-    # 'apps.articles',
 ]
 
 
@@ -169,7 +168,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # INTERNATIONALIZATION
 
-LANGUAGE_CODE = 'ka'
+LANGUAGE_CODE = 'en'
 
 TIME_ZONE = 'Asia/Tbilisi'
 USE_I18N = True

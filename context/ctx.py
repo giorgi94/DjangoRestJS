@@ -21,8 +21,8 @@ def get_hash(name):
 def handle(request):
 
     context = {
-        'HASH_JS': get_hash('webpack'),
-        'HASH_CSS': get_hash('gulp'),
+        'HASH_JS': '',  # get_hash('webpack'),
+        'HASH_CSS': '',  # get_hash('gulp'),
     }
 
     return context
