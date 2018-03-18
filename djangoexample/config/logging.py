@@ -44,7 +44,11 @@ class ServerErrorEmailHandler(logging.Handler):
         reporter = ExceptionReporter(request, is_email=True, *exc_info)
         message = "%s\n\n%s" % (self.format(no_exc_record), reporter.get_traceback_text())
         html_message = reporter.get_traceback_html()
-        self.send_mail(subject, message, fail_silently=True, html_message=html_message)
+
+        # with open('error.html', 'w') as f:
+        #     f.write(html_message)
+
+        # self.send_mail(subject, html_message, fail_silently=True, html_message=html_message)
 
     def send_mail(self, subject, message, *args, **kwargs):
         try:
