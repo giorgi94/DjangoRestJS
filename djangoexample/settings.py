@@ -2,8 +2,9 @@ import os
 from django.utils.translation import ugettext_lazy as _
 
 
-from .envinfo import *
+from .config.envinfo import *
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 ALLOWED_HOSTS = ['*']
 
@@ -26,6 +27,7 @@ INSTALLED_APPS = [
 
 INSTALLED_APPS += [
     # 'adminsortable2',
+    'rest_framework',
     'django_jinja',
     'graphene_django',
 ]
@@ -63,6 +65,80 @@ if DEBUG and DEBUG_TOOLS:
     INTERNAL_IPS = [
         '127.0.0.1',
     ]
+
+# Logging
+
+from .bin.mail import *
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+    },
+    'formatters': {
+        'django.server': {
+            '()': 'django.utils.log.ServerFormatter',
+            'format': '[%(server_time)s] %(message)s',
+        }
+    },
+    'handlers': {
+        'console': {
+            'level': 'INFO',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+        },
+        'django.server': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'django.server',
+        },
+        'mail_server_errors': {
+            'level': 'ERROR',
+            # 'filters': ['require_debug_false'],
+            'class': '%s.config.logging.ServerErrorEmailHandler' % PROJECT_NAME,
+        }
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'mail_server_errors'],
+            'level': 'INFO',
+        },
+        'django.server': {
+            'handlers': ['django.server'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+    }
+}
+
+
+# Rest Framework
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+        # 'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+    ),
+}
+
+if CONFIG.get('localhost'):
+    REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'] = (
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    )
+else:
+    REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'] = (
+        'rest_framework.renderers.JSONRenderer',
+    )
 
 
 # GraphQL

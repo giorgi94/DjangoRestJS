@@ -14,11 +14,12 @@ dist/
 static/
 media/
 log/
+bin/
 templates/jinja2/
 
 migrations
 
-activate
+
 # envinfo.py
 
 .DS_Store

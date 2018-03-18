@@ -8,6 +8,7 @@ from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
 
+from django.conf import settings
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 
