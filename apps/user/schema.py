@@ -14,7 +14,6 @@ class UserNode(DjangoObjectType):
 
     class Meta:
         model = User
-        filter_fields = []
         interfaces = (relay.Node, )
 
 

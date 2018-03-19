@@ -22,7 +22,6 @@ class IndexView(generic.TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        sdg
         return context
 
 
