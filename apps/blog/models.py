@@ -1,6 +1,7 @@
 import datetime as dt
 
 from django.db import models
+from django.db.models import Q
 from django.utils import timezone as tz
 from django.contrib.sites.models import Site
 from django.utils import translation as lang
@@ -75,22 +76,10 @@ class Blog(AbstractTime):
                                 validators=[MaxLengthValidator(400)])
     content = models.TextField(_('Content'), null=True)
 
-    pub_date = models.DateField(_('Publish Date'), default=default_date_now)
-    pub_time = models.TimeField(_('Publish Time'), default=default_time_now)
+    pub_date = models.DateField(_('Publish Date'), default=default_date_now, db_index=True)
+    pub_time = models.TimeField(_('Publish Time'), default=default_time_now, db_index=True)
 
     is_pub = models.BooleanField(_('Publish'), default=True)
-
-    @property
-    def attr(self):
-        return "my attr"
-
-    @staticmethod
-    def filter_blogs(**kwargs):
-        return Blog.objects.filter(
-            is_pub=True,
-            # pub_date__lte=tz.now(),
-            **kwargs
-        )
 
     def get_absolute_url(self):
         return reverse('blog:blog', kwargs={
@@ -98,8 +87,25 @@ class Blog(AbstractTime):
             'alias': self.alias,
         })
 
+    @staticmethod
+    def default_Q():
+        now_time = dt.datetime.now().time()
+        now_date = dt.datetime.now().date()
+
+        return (Q(is_pub=True) & Q(pub_date__lte=now_date)) & (
+            ~Q(pub_date=now_date) | Q(pub_time__lte=now_time))
+
+    def is_published(self):
+        now_time = dt.datetime.now().time()
+        now_date = dt.datetime.now().date()
+        return (self.is_pub == True) and (self.pub_date <= now_date) and (
+            self.pub_date != now_date or self.pub_time <= now_time)
+
+    def __str__(self):
+        return self.title
+
     class Meta:
-        ordering = ['-pub_date']
+        ordering = ['-pub_date', '-pub_time']
         verbose_name = _('Blog')
         verbose_name_plural = _('Blogs')
 

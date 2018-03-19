@@ -1,6 +1,7 @@
 from graphene import (
     Int, String, List
 )
+from copy import copy
 from functools import partial
 from graphene.types.argument import to_arguments
 from graphene.types.generic import GenericScalar
@@ -67,7 +68,7 @@ class DjangoConnectionField(DjangoFilterConnectionField):
         kwargs.update({
             'pk': Int(),
             'orderBy': List(of_type=String),
-            'filterBy': GenericScalar()
+            'filterBy': GenericScalar(),
         })
 
         super().__init__(*args, **kwargs)
@@ -75,12 +76,17 @@ class DjangoConnectionField(DjangoFilterConnectionField):
     @classmethod
     def connection_resolver(cls, resolver, connection, default_manager, max_limit,
                             enforce_first_or_last, filterset_class, filtering_args,
-                            root, info, **args):
+                            root, info, **kwargs):
 
-        filterBy = args.get('filterBy', {})
+        filterBy = kwargs.get('filterBy', {})
         qs = default_manager.get_queryset().filter(**filterBy)
 
-        orderBy = args.get('orderBy', None)
+        model = default_manager.model
+
+        if 'default_Q' in model.__dict__:
+            qs = qs.filter(model.default_Q())
+
+        orderBy = kwargs.get('orderBy', None)
 
         if orderBy:
             qs = qs.order_by(*orderBy)
@@ -92,5 +98,5 @@ class DjangoConnectionField(DjangoFilterConnectionField):
             enforce_first_or_last,
             root,
             info,
-            **args
+            **kwargs
         )

@@ -28,9 +28,14 @@ class CategoryNode(DjangoObjectType):
 class BlogNode(DjangoObjectType):
     pk = Int()
 
+    default_filter_kwargs = {
+        'is_pub': True
+    }
+
     class Meta:
         model = Blog
         interfaces = (relay.Node, )
+
 
 class CommentNode(DjangoObjectType):
     pk = Int()

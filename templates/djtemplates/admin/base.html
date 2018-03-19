@@ -17,10 +17,8 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.7.9/tinymce.min.js"></script>
 
-    <h1>HASH_JS: {{HASH_JS}}</h1>
-
-    <script type="text/javascript" src="/static/js/vendor.bundle{{HASH.HASH_JS}}.js"></script>
-    {# <script type="text/javascript" src="/static/js/common.bundle{{HASH.HASH_JS}}.js"></script> #}
-    <script type="text/javascript" src="/static/js/admin.bundle{{HASH.HASH_JS}}.js"></script>
+    <script type="text/javascript" src="/static/js/vendor{{HASH.HASH_JS}}.js"></script>
+    {# <script type="text/javascript" src="/static/js/common{{HASH.HASH_JS}}.js"></script> #}
+    <script type="text/javascript" src="/static/js/admin{{HASH.HASH_JS}}.js"></script>
 
 {% endblock %}
