@@ -6,12 +6,12 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from graphene_django.views import GraphQLView
 
-# from . import views
+from . import views
 
 admin.site.site_header = settings.SITE_NAME
 
 
-# handler500 = handler404 = views.page_not_found
+handler500 = handler404 = views.page_not_found
 
 urlpatterns = [
     path('sitemaps/', include('djangoexample.sitemaps.urls')),

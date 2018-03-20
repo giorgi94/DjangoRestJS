@@ -48,7 +48,7 @@ class ServerErrorEmailHandler(logging.Handler):
         # with open('error.html', 'w') as f:
         #     f.write(html_message)
 
-        # self.send_mail(subject, html_message, fail_silently=True, html_message=html_message)
+        self.send_mail(subject, html_message, fail_silently=True, html_message=html_message)
 
     def send_mail(self, subject, message, *args, **kwargs):
         try:
@@ -56,7 +56,7 @@ class ServerErrorEmailHandler(logging.Handler):
                 subject,
                 message,
                 settings.EMAIL_HOST_USER,
-                (settings.EMAIL_RESIVER,)
+                settings.EMAIL_SERVER_ERROR
             )
             msg.content_subtype = "html"
             msg.send()
@@ -69,53 +69,3 @@ class ServerErrorEmailHandler(logging.Handler):
         Escape CR and LF characters.
         """
         return subject.replace('\n', '\\n').replace('\r', '\\r')
-
-
-'''
-from django.http import Http404
-
-
-# logging.basicConfig(
-#     filename=os.path.join(settings.BASE_DIR, 'log/logging_example.log'),
-#     level=logging.ERROR,
-#     format="%(levelname)s: TIME %(asctime)s; %(message)s",
-# )
-
-def send_mail(self, body):
-    try:
-        msg = EmailMessage(
-            'subject',
-            body,
-            settings.EMAIL_HOST_USER,
-            (settings.EMAIL_RESIVER,)
-        )
-        msg.content_subtype = "html"
-        msg.send()
-    except Exception as ex:
-        print('Email was not sent')
-        print(ex)
-
-
-def exception_to_str(limit=2, chain=True):
-    s = ""
-    exc_type, exc_value, exc_traceback = sys.exc_info()
-    for line in traceback.TracebackException(type(exc_value), exc_value,
-                                             exc_traceback,
-                                             limit=limit).format(chain=chain):
-        s += line
-    return s
-
-
-def log_exception(message=""):
-    def decorator_function(original_function):
-        def wrapper_function(*args, **kwargs):
-            try:
-                return original_function(*args, **kwargs)
-            except Exception as ex:
-                # logger.exception(message)
-                s = exception_to_str(limit=2)
-                print(s)
-                raise Http404
-        return wrapper_function
-    return decorator_function
-'''

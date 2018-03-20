@@ -31,3 +31,19 @@ class BlogTestMethod(TestCase):
 
         self.assertIs(blog_1.is_published(), True)
         self.assertIs(blog_2.is_published(), False)
+
+    def test_is_published_past(self):
+        past_with_f_time = dt.datetime.now() - dt.timedelta(days=30) + dt.timedelta(minutes=5)
+        past_with_p_time = dt.datetime.now() - dt.timedelta(days=30) - dt.timedelta(minutes=5)
+        past_with_c_time = dt.datetime.now() - dt.timedelta(days=30)
+
+        blog_1 = Blog(pub_date=past_with_f_time.date(),
+                      pub_time=past_with_f_time.time(), is_pub=True)
+        blog_2 = Blog(pub_date=past_with_p_time.date(),
+                      pub_time=past_with_p_time.time(), is_pub=True)
+        blog_3 = Blog(pub_date=past_with_c_time.date(),
+                      pub_time=past_with_c_time.time(), is_pub=True)
+
+        self.assertIs(blog_1.is_published(), True)
+        self.assertIs(blog_2.is_published(), True)
+        self.assertIs(blog_3.is_published(), True)

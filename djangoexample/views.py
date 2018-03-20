@@ -16,5 +16,4 @@ from django.contrib import messages
 
 
 def page_not_found(request, *args, **kwargs):
-    print(args, kwargs)
     return HttpResponse('<h1>Page not found</h1>')
