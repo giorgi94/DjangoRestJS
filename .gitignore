@@ -16,9 +16,9 @@ media/
 log/
 bin/
 templates/jinja2/
+whoosh_index/
 
 migrations
-
 
 # envinfo.py
 

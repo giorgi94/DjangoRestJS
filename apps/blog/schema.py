@@ -28,9 +28,7 @@ class CategoryNode(DjangoObjectType):
 class BlogNode(DjangoObjectType):
     pk = Int()
 
-    default_filter_kwargs = {
-        'is_pub': True
-    }
+    my = String()
 
     class Meta:
         model = Blog

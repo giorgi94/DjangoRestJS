@@ -87,6 +87,10 @@ class Blog(AbstractTime):
             'alias': self.alias,
         })
 
+    @property
+    def my(self):
+        return '/sdf/sfbdf/img%d.png' % self.pk
+
     @staticmethod
     def default_Q():
         now_time = dt.datetime.now().time()

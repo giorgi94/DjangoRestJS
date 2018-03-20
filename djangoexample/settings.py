@@ -30,11 +30,13 @@ INSTALLED_APPS += [
     'rest_framework',
     'django_jinja',
     'graphene_django',
+    'haystack',
 ]
 
 INSTALLED_APPS += [
     'apps.user',
     'apps.blog',
+    'apps.search',
 ]
 
 
@@ -148,12 +150,22 @@ GRAPHENE = {
 }
 
 
+# Haystack and Whoosh
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        'PATH': os.path.join(BASE_DIR, 'whoosh_index'),
+    },
+}
+
+
 # Templates
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates/djtemplates')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates/django')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
