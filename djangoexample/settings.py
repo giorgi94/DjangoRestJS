@@ -30,13 +30,12 @@ INSTALLED_APPS += [
     'rest_framework',
     'django_jinja',
     'graphene_django',
-    'haystack',
 ]
 
 INSTALLED_APPS += [
+    'apps.pymedia',
     'apps.user',
     'apps.blog',
-    'apps.search',
 ]
 
 
@@ -149,17 +148,6 @@ GRAPHENE = {
     'SCHEMA': 'apps.graphQL.schema.schema'
 }
 
-
-# Haystack and Whoosh
-
-HAYSTACK_CONNECTIONS = {
-    'default': {
-        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
-        'PATH': os.path.join(BASE_DIR, 'whoosh_index'),
-    },
-}
-
-
 # Templates
 
 TEMPLATES = [
@@ -179,7 +167,7 @@ TEMPLATES = [
     },
     {
         'BACKEND': 'django.template.backends.jinja2.Jinja2',
-        'DIRS': [os.path.join(BASE_DIR, 'templates/jinja2')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates/jinja2'), ],
         'APP_DIRS': True,
         'OPTIONS': {
             'environment': '%s.jinja2.jinja2.environment' % PROJECT_NAME,

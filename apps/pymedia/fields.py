@@ -3,6 +3,7 @@ from django.core import exceptions
 from django.db import models
 import json
 from .mediaPIL import MediaPIL
+from .widgets import ImagePILWidget
 
 
 class ImagePILField(models.TextField):
@@ -26,17 +27,11 @@ class ImagePILField(models.TextField):
             return MediaPIL()
 
     def get_prep_value(self, value):
+        return value.to_str()
 
-        if not type(value) == dict:
-            value = {}
-
-        kwargs = {
-            'pathway': self.pathway,
-            'point': self.point,
-            'quality': self.quality,
-        }
-
-        return json.dumps({**kwargs, **value}, ensure_ascii=False)
+    def formfield(self, **kwargs):
+        kwargs['widget'] = ImagePILWidget
+        return super().formfield(**kwargs)
 
 
 """

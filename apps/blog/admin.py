@@ -13,7 +13,7 @@ class CategoryAdmin(admin.ModelAdmin):
 @admin.register(Blog)
 class BlogAdmin(admin.ModelAdmin):
     form = BlogForm
-    exclude = ['alias', 'image']
+    exclude = ['alias', ]
 
 
 @admin.register(Comment)

@@ -1,0 +1,22 @@
+<div class="pil-container">
+    <input
+        type="{{ widget.type }}"
+        name="{{ widget.name }}"
+        class="vTextField"
+        value="{{ widget.value.pathway }}"
+        {% include "django/forms/widgets/attrs.html" %}/>
+
+    <div class="pil-img-box box">
+        <div class="pil-img">
+            <img id="{{widget.attrs.id}}-img" src="{{ widget.value.url }}" onload="imgLoaded(event)" onclick="imgClicked(event)" alt="">
+            <div id="{{widget.attrs.id}}-img-point" class="image-crop-point" style="left: 50%; top: 50%;"></div>
+        </div>
+    </div>
+
+    <div class="pil-img-coords pil-img-box">
+        <input type="number" id="{{widget.attrs.id}}-img-point-x" value="{{ widget.value.point.0 }}">
+        <input type="number" id="{{widget.attrs.id}}-img-point-y" value="{{ widget.value.point.1 }}">
+    </div>
+
+
+</div>

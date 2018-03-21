@@ -10,7 +10,6 @@ from . import views
 
 admin.site.site_header = settings.SITE_NAME
 
-
 handler500 = handler404 = views.page_not_found
 
 urlpatterns = [
@@ -22,9 +21,6 @@ urlpatterns = [
 
     path('admin/', admin.site.urls),
     path('i18n/', include('django.conf.urls.i18n')),
-
-    path('s/', include('apps.search.urls')),
-    path('search/', include('haystack.urls')),
 ]
 
 if settings.DEBUG:

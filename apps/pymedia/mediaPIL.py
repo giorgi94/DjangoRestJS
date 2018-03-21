@@ -1,4 +1,5 @@
 import os
+import json
 from .imagePIL import (
     ImagePIL, download, normilize_size)
 from django.conf import settings
@@ -37,7 +38,7 @@ class MediaPIL(ImagePIL):
 
     def set_path(self, pathway):
         if pathway:
-            self.path = os.path.join(MEDIA_DIR, path)
+            self.path = os.path.join(MEDIA_DIR, pathway)
         else:
             self.path = None
 
@@ -72,6 +73,23 @@ class MediaPIL(ImagePIL):
 
     def __getitem__(self, key):
         return getattr(self, key)
+
+    def to_value(self):
+        return {
+            'pathway': self.pathway,
+            'point': self.point,
+            'url': self.url,
+        }
+
+    def to_json(self):
+        return {
+            'pathway': self.pathway,
+            'point': self.point,
+            'quality': self.quality,
+        }
+
+    def to_str(self):
+        return json.dumps(self.to_json(), ensure_ascii=False)
 
 
 if __name__ == '__main__':

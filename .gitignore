@@ -9,9 +9,9 @@
 .bash_history
 uwsgi_logs.txt
 
+/static/
 build/hash/
 dist/
-static/
 media/
 log/
 bin/
