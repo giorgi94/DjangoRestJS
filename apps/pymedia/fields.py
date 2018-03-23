@@ -10,7 +10,7 @@ class ImagePILField(models.TextField):
     description = "Image PIL Field"
 
     def __init__(self, pathway=None, point=(50, 50), quality=90,
-                 upload_to=".", url="", *args, **kwargs):
+                 upload_to=".", *args, **kwargs):
 
         self.default_kwargs = {
             'pathway': pathway,
@@ -35,17 +35,8 @@ class ImagePILField(models.TextField):
         return value
 
     def clean(self, value, model_instance):
-
-        print('\nvalue:', value)
-        print('\nself:', dir(self))
-
-        return MediaPIL()
-
-        # print(value)
-        # print(model_instance)
-        # print(self.__dict__)
-        # value = super().clean(value, model_instance)
-        # return self.get_prep_value(value)
+        value = json.loads(value)
+        return MediaPIL(**value)
 
     def get_prep_value(self, value):
         if type(value) != MediaPIL:

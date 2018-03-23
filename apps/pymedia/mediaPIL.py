@@ -30,7 +30,8 @@ class MediaPIL(ImagePIL):
     MEDIA_DIR = MEDIA_DIR
     MEDIA_URL = MEDIA_URL
 
-    def __init__(self, pathway=None, point=(50, 50), quality=90):
+    def __init__(self, pathway=None, point=(50, 50), quality=90,
+                 *args, **kwargs):
         self.pathway = pathway
         self.set_path(pathway)
         self.point = tuple(point)
