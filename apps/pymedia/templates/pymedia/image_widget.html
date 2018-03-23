@@ -1,9 +1,16 @@
 <div class="pil-container">
     <input
         type="{{ widget.type }}"
+        class="vTextField"
+        {% if widget.value.pathway %}value="{{ widget.value.pathway }}" {% endif %}
+        {% include "django/forms/widgets/attrs.html" %}/>
+
+    <input
+        {# hidden #}
+        type="{{ widget.type }}"
         name="{{ widget.name }}"
         class="vTextField"
-        value="{{ widget.value.pathway }}"
+        value="{{ widget.value }}"
         {% include "django/forms/widgets/attrs.html" %}/>
 
     <div class="pil-img-box box">

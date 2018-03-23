@@ -10,11 +10,15 @@ class ImagePILField(models.TextField):
     description = "Image PIL Field"
 
     def __init__(self, pathway=None, point=(50, 50), quality=90,
-                 upload_to=".", *args, **kwargs):
-        self.pathway = pathway
-        self.point = point
-        self.quality = quality
-        self.upload_to = upload_to
+                 upload_to=".", url="", *args, **kwargs):
+
+        self.default_kwargs = {
+            'pathway': pathway,
+            'point': point,
+            'quality': quality,
+        }
+        kwargs['default'] = json.dumps(
+            self.default_kwargs, ensure_ascii=False)
         super().__init__(*args, **kwargs)
 
     def from_db_value(self, value, expression, connection):
@@ -24,9 +28,26 @@ class ImagePILField(models.TextField):
             kwargs = json.loads(value)
             return MediaPIL(**kwargs)
         except:
-            return MediaPIL()
+            return MediaPIL(**self.default_kwargs)
+
+    def value_to_string(self, obj):
+        value = self._get_val_from_obj(obj)
+        return value
+
+    def clean(self, value, model_instance):
+
+        # print('\nvalue:', value)
+        # print('\nself:', dir(self))
+
+        # print(value)
+        # print(model_instance)
+        # print(self.__dict__)
+        value = super().clean(value, model_instance)
+        return self.get_prep_value(value)
 
     def get_prep_value(self, value):
+        if type(value) != MediaPIL:
+            value = MediaPIL(**self.default_kwargs)
         return value.to_str()
 
     def formfield(self, **kwargs):
