@@ -36,14 +36,16 @@ class ImagePILField(models.TextField):
 
     def clean(self, value, model_instance):
 
-        # print('\nvalue:', value)
-        # print('\nself:', dir(self))
+        print('\nvalue:', value)
+        print('\nself:', dir(self))
+
+        return MediaPIL()
 
         # print(value)
         # print(model_instance)
         # print(self.__dict__)
-        value = super().clean(value, model_instance)
-        return self.get_prep_value(value)
+        # value = super().clean(value, model_instance)
+        # return self.get_prep_value(value)
 
     def get_prep_value(self, value):
         if type(value) != MediaPIL:

@@ -1,8 +1,8 @@
+import os
+import json
 from django.conf import settings
-from django.utils.safestring import mark_safe
 from django.forms import widgets
 from apps.pymedia.mediaPIL import MediaPIL
-import json
 
 MEDIA_URL = settings.MEDIA_URL
 
@@ -16,16 +16,17 @@ class ImagePILWidget(widgets.TextInput):
         return os.path.join(MEDIA_URL, pathway)
 
     def format_value(self, value):
-        print(value, type(value))
         if type(value) == str:
             value = json.loads(value)
             value['url'] = self.url(value['pathway'])
             return value
-
         return value.to_value()
 
     def get_context(self, name, value, attrs):
         context = super().get_context(name, value, attrs)
+        value = context['widget']['value']
+        context['json'] = json.dumps(value, ensure_ascii=False)
+        context['MEDIA_URL'] = MEDIA_URL
         return context
 
     class Media:

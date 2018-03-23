@@ -1,16 +1,18 @@
 <div class="pil-container">
     <input
+        data-url="{{ MEDIA_URL }}"
         type="{{ widget.type }}"
         class="vTextField"
         {% if widget.value.pathway %}value="{{ widget.value.pathway }}" {% endif %}
-        {% include "django/forms/widgets/attrs.html" %}/>
+        {% include "django/forms/widgets/attrs.html" %}
+        onchange="changeURL(event)"/>
 
     <input
         {# hidden #}
         type="{{ widget.type }}"
         name="{{ widget.name }}"
         class="vTextField"
-        value="{{ widget.value }}"
+        value="{{ json }}"
         {% include "django/forms/widgets/attrs.html" %}/>
 
     <div class="pil-img-box box">
