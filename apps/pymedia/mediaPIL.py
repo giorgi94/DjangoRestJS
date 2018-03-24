@@ -96,6 +96,9 @@ class MediaPIL(ImagePIL):
         return json.dumps(self.to_json(), ensure_ascii=False)
 
     def get(self, method, *args, **kwargs):
+        overwrite = kwargs.get('overwrite', False)
+        kwargs['overwrite'] = overwrite
+
         r = getattr(self, method)(*args, **kwargs)
         if r[0]:
             return self.path_to_url(r[1])

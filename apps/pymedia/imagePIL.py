@@ -104,7 +104,7 @@ class ImagePIL:
 
         return os.path.join(dirname, '__thumb__', filename)
 
-    def cover(self, size, point=None, safepath=None):
+    def cover(self, size, point=None, safepath=None, overwrite=True):
         try:
             with Image.open(self.path) as img:
                 if point is None:
@@ -114,6 +114,13 @@ class ImagePIL:
 
                 if point is None:
                     point = self.point
+
+                if safepath is None:
+                    safepath = self.safepath_isnull(size=size, method='cover', point=point)
+
+                if not overwrite:
+                    if os.path.isfile(safepath):
+                        return (True, safepath)
 
                 cover_size = self.get_cover_size(img.size, size)
 
@@ -123,8 +130,6 @@ class ImagePIL:
                 img = img.resize(cover_size, Image.ANTIALIAS)
                 img = img.crop(coords)
 
-                if safepath is None:
-                    safepath = self.safepath_isnull(size=size, method='cover', point=point)
                 assure_path_exists(safepath)
 
                 img.save(safepath, subsampling=0, quality=self.quality, optimize=True)
@@ -134,16 +139,21 @@ class ImagePIL:
             print(ex)
             return (False,)
 
-    def fit(self, size, safepath=None):
+    def fit(self, size, safepath=None, overwrite=True):
         try:
             with Image.open(self.path) as img:
                 size = normilize_size(size)
 
+                if safepath is None:
+                    safepath = self.safepath_isnull(size=size, method='fit')
+
+                if not overwrite:
+                    if os.path.isfile(safepath):
+                        return (True, safepath)
+
                 fit_size = self.get_fit_size(img.size, size)
                 img = img.resize(fit_size, Image.ANTIALIAS)
 
-                if safepath is None:
-                    safepath = self.safepath_isnull(size=size, method='fit')
                 assure_path_exists(safepath)
 
                 img.save(safepath, subsampling=0, quality=self.quality, optimize=True)
