@@ -68,26 +68,24 @@ if DEBUG and DEBUG_TOOLS:
     ]
 
 
-# Redis
+# Caches
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': os.path.join(BASE_DIR, 'cache'),
+    },
+}
+
+from .config.redis_cache import *
+
 if USE_REDIS:
-    CACHES = {
-        "default": {
-            "BACKEND": "django_redis.cache.RedisCache",
-            "LOCATION": "redis://127.0.0.1:6379/0",
-            "OPTIONS": {
-                "CLIENT_CLASS": "django_redis.client.DefaultClient",
-                "COMPRESSOR": "django_redis.compressors.zlib.ZlibCompressor",
-                "SOCKET_CONNECT_TIMEOUT": 5,  # in seconds
-                "SOCKET_TIMEOUT": 5,  # in seconds
-                "IGNORE_EXCEPTIONS": True,
-            }
-        }
-    }
+    CACHES['redis'] = REDIS_CHACHE_CONFIG
 
-    # DJANGO_REDIS_LOG_IGNORED_EXCEPTIONS = True
+# Session
 
-    SESSION_ENGINE = "django.contrib.sessions.backends.cache"
-    SESSION_CACHE_ALIAS = "default"
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+SESSION_CACHE_ALIAS = 'default'  # "redis"
 
 
 # Logging
@@ -124,7 +122,7 @@ LOGGING = {
         },
         'mail_server_errors': {
             'level': 'ERROR',
-            # 'filters': ['require_debug_false'],
+            'filters': ['require_debug_false'],
             'class': '%s.config.logging.ServerErrorEmailHandler' % PROJECT_NAME,
         }
     },

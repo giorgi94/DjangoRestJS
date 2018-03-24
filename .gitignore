@@ -15,8 +15,11 @@ uwsgi_logs.txt
 build/hash/
 dist/
 media/
-log/
 bin/
+
+log/
+cache/
+
 templates/jinja2/
 whoosh_index/
 
