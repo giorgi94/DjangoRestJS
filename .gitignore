@@ -3,7 +3,9 @@
 *$py.class
 *.sqlite3
 *.zip
+*.rdb
 
+redis.conf
 
 .lhistory
 .bash_history

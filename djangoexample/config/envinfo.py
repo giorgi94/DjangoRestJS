@@ -1,13 +1,14 @@
 import os
 
 DEBUG = True
-
 DEBUG_TOOLS = False
 
 CONFIG = {
     'localhost': True,
     'livereload': False
 }
+
+USE_REDIS = False
 
 
 SITE_ID = 1

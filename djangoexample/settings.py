@@ -67,6 +67,29 @@ if DEBUG and DEBUG_TOOLS:
         '127.0.0.1',
     ]
 
+
+# Redis
+if USE_REDIS:
+    CACHES = {
+        "default": {
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": "redis://127.0.0.1:6379/0",
+            "OPTIONS": {
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
+                "COMPRESSOR": "django_redis.compressors.zlib.ZlibCompressor",
+                "SOCKET_CONNECT_TIMEOUT": 5,  # in seconds
+                "SOCKET_TIMEOUT": 5,  # in seconds
+                "IGNORE_EXCEPTIONS": True,
+            }
+        }
+    }
+
+    # DJANGO_REDIS_LOG_IGNORED_EXCEPTIONS = True
+
+    SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+    SESSION_CACHE_ALIAS = "default"
+
+
 # Logging
 
 from .bin.mail import *
@@ -101,7 +124,7 @@ LOGGING = {
         },
         'mail_server_errors': {
             'level': 'ERROR',
-            'filters': ['require_debug_false'],
+            # 'filters': ['require_debug_false'],
             'class': '%s.config.logging.ServerErrorEmailHandler' % PROJECT_NAME,
         }
     },

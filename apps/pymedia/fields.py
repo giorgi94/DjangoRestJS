@@ -9,8 +9,11 @@ from .widgets import ImagePILWidget
 class ImagePILField(models.TextField):
     description = "Image PIL Field"
 
-    def __init__(self, pathway=None, point=(50, 50), quality=90,
+    def __init__(self, pathway="", point=(50, 50), quality=90,
                  upload_to=".", *args, **kwargs):
+
+        if pathway is None:
+            pathway = ""
 
         self.default_kwargs = {
             'pathway': pathway,
