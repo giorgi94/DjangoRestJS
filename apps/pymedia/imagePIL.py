@@ -128,11 +128,11 @@ class ImagePIL:
                 assure_path_exists(safepath)
 
                 img.save(safepath, subsampling=0, quality=self.quality, optimize=True)
-                return True
-            return False
+                return (True, safepath)
+            return (False,)
         except Exception as ex:
             print(ex)
-            return False
+            return (False,)
 
     def fit(self, size, safepath=None):
         try:
@@ -148,11 +148,11 @@ class ImagePIL:
 
                 img.save(safepath, subsampling=0, quality=self.quality, optimize=True)
 
-                return True
-            return False
+                return (True, safepath)
+            return (False,)
         except Exception as ex:
             print(ex)
-            return False
+            return (False,)
 
 
 if __name__ == '__main__':

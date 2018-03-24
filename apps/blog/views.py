@@ -15,6 +15,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from django.views import generic
 from django.conf import settings
+from .models import Blog
 
 
 class IndexView(generic.TemplateView):
@@ -22,6 +23,8 @@ class IndexView(generic.TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['blog'] = Blog.objects.get(pk=20)
+        context['blog2'] = Blog.objects.get(pk=21)
         return context
 
 

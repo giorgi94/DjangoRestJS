@@ -49,6 +49,9 @@ class MediaPIL(ImagePIL):
             return None
         return os.path.join(MEDIA_URL, self.pathway)
 
+    def path_to_url(self, path):
+        return os.path.join(MEDIA_URL, path.replace(MEDIA_DIR + '/', ''))
+
     @staticmethod
     def placeholder(size):
         return 'http://via.placeholder.com/%s' % size
@@ -91,6 +94,11 @@ class MediaPIL(ImagePIL):
 
     def to_str(self):
         return json.dumps(self.to_json(), ensure_ascii=False)
+
+    def get(self, method, *args, **kwargs):
+        r = getattr(self, method)(*args, **kwargs)
+        if r[0]:
+            return self.path_to_url(r[1])
 
 
 if __name__ == '__main__':
