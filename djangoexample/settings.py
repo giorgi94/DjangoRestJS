@@ -123,7 +123,7 @@ LOGGING = {
         'mail_server_errors': {
             'level': 'ERROR',
             'filters': ['require_debug_false'],
-            'class': '%s.config.logging.ServerErrorEmailHandler' % PROJECT_NAME,
+            'class': '%s.config.logging.ServerErrorHandler' % PROJECT_NAME,
         }
     },
     'loggers': {

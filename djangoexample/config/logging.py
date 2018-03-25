@@ -1,16 +1,18 @@
 import os
+import re
 import sys
+import json
 import logging
-import traceback
+import requests
+
 from copy import copy
-from django.views.debug import ExceptionReporter
 from django.core.mail import EmailMessage
-from django.template.loader import render_to_string
+from django.views.debug import ExceptionReporter
 
 from django.conf import settings
 
 
-class ServerErrorEmailHandler(logging.Handler):
+class ServerErrorHandler(logging.Handler):
 
     def __init__(self, include_html=False, email_backend=None):
         logging.Handler.__init__(self)
@@ -45,16 +47,17 @@ class ServerErrorEmailHandler(logging.Handler):
         message = "%s\n\n%s" % (self.format(no_exc_record), reporter.get_traceback_text())
         html_message = reporter.get_traceback_html()
 
-        # with open('error.html', 'w') as f:
-        #     f.write(html_message)
+        message = extract_tags(message)
 
-        self.send_mail(subject, html_message, fail_silently=True, html_message=html_message)
+        send_message_to_slack(message)
 
-    def send_mail(self, subject, message, *args, **kwargs):
+        self.send_mail(subject, message, html_message)
+
+    def send_mail(self, subject, message, html_message):
         try:
             msg = EmailMessage(
                 subject,
-                message,
+                html_message,
                 settings.EMAIL_HOST_USER,
                 settings.EMAIL_SERVER_ERROR
             )
@@ -69,3 +72,60 @@ class ServerErrorEmailHandler(logging.Handler):
         Escape CR and LF characters.
         """
         return subject.replace('\n', '\\n').replace('\r', '\\r')
+
+
+MESSAGE_TAGS = [
+    'Internal Server Error',
+    'Request Method',
+    'Request URL',
+    # 'Django Version',
+    # 'Python Executable',
+    # 'Python Version',
+    # 'Python Path',
+    'Server time',
+    # 'Installed Applications',
+    # 'Installed Middleware',
+    'Traceback',
+    'Exception Type',
+    'Exception Value',
+    # 'Request information',
+    'USER',
+    # 'GET',
+    # 'POST',
+    # 'FILES',
+    # 'COOKIES',
+    # 'META',
+    # 'Settings'
+]
+
+
+def extract_tags(message_lines_str):
+    message = ""
+    append = False
+
+    for line in message_lines_str.split('\n'):
+        tag = re.match(r'^[a-zA-Z\s]+(?=\:)', line)
+
+        if tag:
+            if tag.group() in MESSAGE_TAGS:
+                append = True
+                message += line.strip() + '\n'
+            else:
+                append = False
+        elif append and line.strip():
+            message += '\t' + line.strip() + '\n'
+    return message
+
+
+SLACK_WEBHOOK_URL = "https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX"
+
+
+def send_message_to_slack(message):
+    headers = {
+        'content-type': 'application/json'
+    }
+    data = {
+        'text': message,
+    }
+    r = requests.post(SLACK_WEBHOOK_URL, headers=headers, data=json.dumps(data), timeout=5)
+    return r.status_code
