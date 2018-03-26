@@ -30,6 +30,7 @@ INSTALLED_APPS += [
     'rest_framework',
     'django_jinja',
     'graphene_django',
+    'haystack',
 ]
 
 INSTALLED_APPS += [
@@ -73,7 +74,11 @@ if DEBUG and DEBUG_TOOLS:
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-        'LOCATION': os.path.join(BASE_DIR, 'cache'),
+        'LOCATION': os.path.join(BASE_DIR, 'cache/apps'),
+    },
+    'sessions': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': os.path.join(BASE_DIR, 'cache/sessions'),
     },
 }
 
@@ -85,7 +90,22 @@ if USE_REDIS:
 # Session
 
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
-SESSION_CACHE_ALIAS = 'default'  # "redis"
+SESSION_CACHE_ALIAS = 'sessions'  # "redis"
+
+
+# Search
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        'PATH': os.path.join(BASE_DIR, 'whoosh_index'),
+        'POST_LIMIT': 128 * 1024 * 1024,
+        'INCLUDE_SPELLING': True,
+        'BATCH_SIZE': 100,
+    },
+}
+
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 
 
 # Logging

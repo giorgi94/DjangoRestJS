@@ -17,6 +17,9 @@ from django.views import generic
 from django.conf import settings
 from .models import Blog
 
+from haystack.query import SearchQuerySet
+from haystack.views import SearchView
+
 
 class IndexView(generic.TemplateView):
     template_name = 'home.html'
@@ -35,3 +38,7 @@ class BlogView(generic.TemplateView):
         context = super().get_context_data(**kwargs)
 
         return context
+
+
+class BlogSearchView(SearchView):
+    template = 'search/search.html'

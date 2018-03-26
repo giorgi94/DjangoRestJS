@@ -6,10 +6,12 @@ from . import views
 app_name = "blog"
 
 urlpatterns = [
-    path(r'', views.IndexView.as_view(), name="index"),
+    path('', views.IndexView.as_view(), name="index"),
 
     re_path(r'^blog/(?P<pk>[\d]+)$',
             views.BlogView.as_view(), name="blog-pk"),
     re_path(r'^blog/(?P<pk>[\d]+)-(?P<alias>[\w\-]+)$',
             views.BlogView.as_view(), name="blog"),
+
+    path('search', views.BlogSearchView(), name="search"),
 ]
