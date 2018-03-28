@@ -1,7 +1,7 @@
 import os
 
 DEBUG = True
-DEBUG_TOOLS = False
+DEBUG_TOOLS = True
 
 CONFIG = {
     'localhost': True,

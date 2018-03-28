@@ -14,10 +14,7 @@ class BlogSearchIndex(indexes.SearchIndex, indexes.Indexable):
 
     title = indexes.CharField(model_attr='title')
     content = indexes.EdgeNgramField(model_attr='content')
-
-    published = indexes.DateTimeField(model_attr='published', faceted=True)
-
-    suggestions = indexes.FacetCharField()
+    published = indexes.DateTimeField(model_attr='published')
 
     def get_model(self):
         return Blog
@@ -26,26 +23,51 @@ class BlogSearchIndex(indexes.SearchIndex, indexes.Indexable):
         model = self.get_model()
         return model.objects.filter(model.default_Q())
 
-    def prepare(self, obj):
-        prepared_data = super().prepare(obj)
-        prepared_data['suggestions'] = prepared_data['text']
-        return prepared_data
 
-
-def blogSearchQuery(qstring, limit=20, sortedby="published", reverse=True):
+def searchQuery(qstring, page=1, pagelen=5,
+                sortedby="published", reverse=True):
     ix = index.open_dir(whoosh_dir)
 
     qp = qparser.QueryParser("text", schema=ix.schema)
     q = qp.parse(qstring)
 
-    query = []
-
     with ix.searcher() as s:
-        results = s.search(q, limit=limit, sortedby=sortedby, reverse=reverse)
-
+        results = s.search_page(q, page, pagelen=pagelen,
+                                sortedby=sortedby, reverse=reverse)
         if not results:
             corrected = s.correct_query(q, qstring)
-            results = s.search(corrected.query,
-                               limit=limit, sortedby=sortedby, reverse=reverse)
-        query = [dict(result) for result in results]
-    return query
+            results = s.search_page(corrected.query, page, pagelen=pagelen,
+                                    sortedby=sortedby, reverse=reverse)
+        return {
+            'pagination': {
+                'total': results.total,
+                'pagenum': results.pagenum,
+                'pagelen': results.pagelen,
+                'offset': results.offset
+            },
+            'query': [dict(result) for result in results]
+        }
+
+
+class SearchMixin:
+    pagelen = 5
+    reverse = True
+    sortedby = "published"
+    q_min_length = 3
+    query_kwarg = 'q'
+    page_kwarg = 'page'
+
+    def get_search_results(self, q, page=1):
+        if len(q) < self.q_min_length:
+            return None
+        return searchQuery(q, page,
+                           pagelen=self.pagelen,
+                           sortedby=self.sortedby,
+                           reverse=self.reverse)
+
+    def get_searched_data(self):
+        q = self.request.GET.get(self.query_kwarg, '')
+        page = self.request.GET.get(self.page_kwarg, 1)
+        if type(page) == str:
+            page = int(page)
+        return self.get_search_results(q, page)

@@ -17,10 +17,7 @@ from django.views import generic
 from django.conf import settings
 from .models import Blog
 
-# from haystack.query import SearchQuerySet
-# from haystack.generic_views import SearchView
-
-from .search_indexes import blogSearchQuery
+from .search_indexes import SearchMixin
 
 
 class IndexView(generic.TemplateView):
@@ -42,16 +39,10 @@ class BlogView(generic.TemplateView):
         return context
 
 
-class BlogSearchView(SearchView):
+class BlogSearchView(SearchMixin, generic.TemplateView):
     template_name = 'search.html'
-    paginate_by = 5
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        print(context['query'])
+        context['searched_data'] = self.get_searched_data()
         return context
-
-        #
-        # qstring = 'blg'
-        # results = blogSearchQuery(qstring=qstring)
-        # print(results[0])
