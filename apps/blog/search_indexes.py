@@ -14,6 +14,7 @@ class BlogSearchIndex(indexes.SearchIndex, indexes.Indexable):
 
     title = indexes.CharField(model_attr='title')
     content = indexes.EdgeNgramField(model_attr='content')
+    image = indexes.CharField(model_attr='img_dump')
     published = indexes.DateTimeField(model_attr='published')
 
     def get_model(self):

@@ -1,3 +1,4 @@
+import json
 import pytz
 import datetime as dt
 
@@ -99,8 +100,8 @@ class Blog(AbstractTime):
         return p
 
     @property
-    def my(self):
-        return '/sdf/sfbdf/img%d.png' % self.pk
+    def img_dump(self):
+        return json.dumps(self.image.to_value(), ensure_ascii=False)
 
     @staticmethod
     def default_Q():
