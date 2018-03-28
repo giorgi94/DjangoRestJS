@@ -1,7 +1,7 @@
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 from django.contrib import admin
-from .models import Blog, Comment, Category
+from .models import Blog, Comment, Category, Tag
 from .forms import BlogForm
 
 
@@ -19,3 +19,6 @@ class BlogAdmin(admin.ModelAdmin):
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
     pass
+
+
+admin.site.register(Tag)

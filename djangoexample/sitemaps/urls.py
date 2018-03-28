@@ -14,8 +14,8 @@ urlpatterns = [
          {
              'sitemaps': {
                  'blogs': BlogSitemap,
-                 # 'tags': TagSitemap,
-                 # 'authors': AuthorSitemap,
+                 'tags': TagSitemap,
+                 'categories': CategorySitemap,
              }
          },
          name='django.contrib.sitemaps.views.sitemap'),

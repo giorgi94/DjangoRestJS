@@ -9,7 +9,7 @@ class BlogFeed(Feed):
     link = 'http://django.example.com'
 
     def items(self):
-        return Blog.filter_blogs()[:20]
+        return Blog.objects.filter(Blog.default_Q())[:20]
 
     def item_title(self, item):
         return item.title
@@ -18,4 +18,4 @@ class BlogFeed(Feed):
         return item.abstract
 
     def item_pubdate(self, item):
-        return item.created
+        return item.published

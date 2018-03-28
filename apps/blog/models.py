@@ -1,3 +1,4 @@
+import pytz
 import datetime as dt
 
 from django.db import models
@@ -32,6 +33,10 @@ class Category(models.Model):
     description = models.TextField(_('Description'), blank=True, null=True)
     active = models.BooleanField(_('Active'), default=False, blank=True)
 
+    @staticmethod
+    def default_Q():
+        return Q(active=True)
+
     def get_absolute_url(self):
         return reverse('blog:category', kwargs={'alias': self.alias})
 
@@ -44,7 +49,7 @@ class Category(models.Model):
 
 
 class Tag(models.Model):
-    name = models.CharField(_('Name'), max_length=35, null=True)
+    name = models.CharField(_('Name'), max_length=35, null=True, unique=True)
 
     def get_absolute_url(self):
         return reverse('blog:tag', kwargs={'name': self.name})
@@ -86,6 +91,12 @@ class Blog(AbstractTime):
             'pk': self.pk,
             'alias': self.alias,
         })
+
+    @property
+    def published(self):
+        p = dt.datetime.combine(self.pub_date, self.pub_time)
+        p = pytz.timezone(settings.TIME_ZONE).localize(p)
+        return p
 
     @property
     def my(self):

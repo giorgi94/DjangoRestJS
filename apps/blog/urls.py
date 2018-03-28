@@ -13,5 +13,11 @@ urlpatterns = [
     re_path(r'^blog/(?P<pk>[\d]+)-(?P<alias>[\w\-]+)$',
             views.BlogView.as_view(), name="blog"),
 
-    path('search', views.BlogSearchView(), name="search"),
+    re_path(r'^category/(?P<alias>[\w\-]+)$',
+            views.BlogView.as_view(), name="category"),
+
+    re_path(r'^tag/(?P<name>[\w\s]+)$',
+            views.BlogView.as_view(), name="tag"),
+
+    path('search', views.BlogSearchView.as_view(), name="search"),
 ]

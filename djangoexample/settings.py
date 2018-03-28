@@ -31,6 +31,7 @@ INSTALLED_APPS += [
     'django_jinja',
     'graphene_django',
     'haystack',
+    'whoosh',
 ]
 
 INSTALLED_APPS += [
@@ -95,10 +96,12 @@ SESSION_CACHE_ALIAS = 'sessions'  # "redis"
 
 # Search
 
+WHOOSH_INDEX = os.path.join(BASE_DIR, 'whoosh_index')
+
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
-        'PATH': os.path.join(BASE_DIR, 'whoosh_index'),
+        'PATH': WHOOSH_INDEX,
         'POST_LIMIT': 128 * 1024 * 1024,
         'INCLUDE_SPELLING': True,
         'BATCH_SIZE': 100,
