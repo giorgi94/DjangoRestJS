@@ -4,7 +4,7 @@ from haystack import indexes
 from whoosh import index, qparser
 
 from django.conf import settings
-from .models import Blog
+from .models import Blog, Category
 
 whoosh_dir = settings.WHOOSH_INDEX
 

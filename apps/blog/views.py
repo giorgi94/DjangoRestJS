@@ -17,6 +17,7 @@ from django.views import generic
 from django.conf import settings
 from .models import Blog
 
+
 from .search_indexes import SearchMixin
 
 

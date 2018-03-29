@@ -17,7 +17,7 @@ dist/
 media/
 bin/
 
-log/
+logs/
 cache/
 
 templates/jinja2/

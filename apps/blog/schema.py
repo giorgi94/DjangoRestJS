@@ -2,6 +2,7 @@ from graphene import (
     relay, ObjectType, Schema,
     Int, String, JSONString, List, Field
 )
+from graphene.types.generic import GenericScalar
 from graphene_django.types import DjangoObjectType
 from apps.graphQL.fields import DjangoConnectionField
 
@@ -27,8 +28,11 @@ class CategoryNode(DjangoObjectType):
 
 class BlogNode(DjangoObjectType):
     pk = Int()
+    published = String()
+    image = GenericScalar()
 
-    my = String()
+    def resolve_image(self, value):
+        return self.image.to_value()
 
     class Meta:
         model = Blog

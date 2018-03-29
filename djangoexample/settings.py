@@ -31,7 +31,6 @@ INSTALLED_APPS += [
     'django_jinja',
     'graphene_django',
     'haystack',
-    'whoosh',
 ]
 
 INSTALLED_APPS += [

@@ -34,8 +34,11 @@ class ImagePILField(models.TextField):
             return MediaPIL(**self.default_kwargs)
 
     def value_to_string(self, obj):
-        value = self._get_val_from_obj(obj)
-        return value
+        return json.dumps(obj.image.to_json(), ensure_ascii=False)
+
+    def to_python(self, value):
+        value = json.loads(value)
+        return MediaPIL(**value)
 
     def clean(self, value, model_instance):
         value = json.loads(value)
@@ -49,10 +52,3 @@ class ImagePILField(models.TextField):
     def formfield(self, **kwargs):
         kwargs['widget'] = ImagePILWidget
         return super().formfield(**kwargs)
-
-
-"""
-from apps.blog.models import Blog
-blog = Blog.objects.all()[0]
-blog.image
-"""
