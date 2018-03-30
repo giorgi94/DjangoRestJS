@@ -23,20 +23,20 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sitemaps',
     'django.contrib.sites',
-]
 
-INSTALLED_APPS += [
+    # Packages
     # 'adminsortable2',
     'rest_framework',
     'django_jinja',
     'graphene_django',
     'haystack',
-]
 
-INSTALLED_APPS += [
+    # Custom apps
     'apps.pymedia',
     'apps.user',
     'apps.blog',
+
+    'apps.search',
 ]
 
 
@@ -108,7 +108,7 @@ HAYSTACK_CONNECTIONS = {
 }
 
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
-
+# HAYSTACK_LIMIT_TO_REGISTERED_MODELS = False
 
 # Logging
 

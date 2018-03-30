@@ -1,3 +1,2 @@
 {{object.title}}
 {{object.content}}
-{{object.published}}
