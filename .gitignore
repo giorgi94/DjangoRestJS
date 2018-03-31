@@ -16,7 +16,7 @@ build/hash/
 dist/
 media/
 bin/
-
+locale/
 logs/
 cache/
 
