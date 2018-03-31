@@ -2,15 +2,23 @@
 
 {% block extrastyle %}
 <script type="text/javascript" src="/static/jquery/dist/jquery.min.js"></script>
-<script type="text/javascript" src="/static/semantic/dist/semantic.min.js"></script>
+{#<script type="text/javascript" src="/static/semantic/dist/semantic.min.js"></script>#}
 
 <script type="text/javascript" src="/static/tinymce/jquery.tinymce.js"></script>
 <script type="text/javascript" src="/static/tinymce/tinymce.min.js"></script>
+
+
 {% endblock %}
 
 
 {% block responsive %}
-    {{block.super}}
-    <link rel="stylesheet" type="text/css" href="/static/semantic/dist/semantic.min.css">
-    <link rel="stylesheet" type="text/css" href="/static/tinymce/tinymce.custom.css">
+{{block.super}}
+{#<link rel="stylesheet" type="text/css" href="/static/semantic/dist/semantic.min.css">#}
+<link rel="stylesheet" type="text/css" href="/static/tinymce/tinymce.custom.css">
+{% endblock %}
+
+
+{% block footer %}
+{{block.super}}
+<script type="text/javascript" src="/static/admin/js/admin.js"></script>
 {% endblock %}
