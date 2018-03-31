@@ -49,9 +49,8 @@ class ServerErrorHandler(logging.Handler):
 
         message = extract_tags(message)
 
-        send_message_to_slack(message)
-
-        self.send_mail(subject, message, html_message)
+        # send_message_to_slack(message)
+        # self.send_mail(subject, message, html_message)
 
     def send_mail(self, subject, message, html_message):
         try:

@@ -7,10 +7,7 @@ const WatchLiveReloadPlugin = require('webpack-watch-livereload-plugin');
 
 var entry = {
     main: './src/js/main.js',
-    admin: './src/js/admin.js',
 }
-
-
 
 
 var clientConfig = merge(baseConfig, {
@@ -25,7 +22,7 @@ var clientConfig = merge(baseConfig, {
             files: [
                 './src/**/*.js',
                 './dist/**/*.css',
-                './templates/jinja2/**/*.html',
+                './templates/jinja2/pages/*.html',
             ]
         }),
     ]

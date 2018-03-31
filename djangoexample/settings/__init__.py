@@ -1,10 +1,11 @@
 import os
-from django.utils.translation import ugettext_lazy as _
+from .envinfo import *
 
 
-from .config.envinfo import *
-
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(
+    os.path.dirname(
+        os.path.dirname(
+            os.path.abspath(__file__))))
 
 ALLOWED_HOSTS = ['*']
 
@@ -80,17 +81,24 @@ CACHES = {
         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
         'LOCATION': os.path.join(BASE_DIR, 'cache/sessions'),
     },
+    # 'redis': {
+    #     "BACKEND": "django_redis.cache.RedisCache",
+    #     "LOCATION": "redis://127.0.0.1:6379/0",
+    #     "OPTIONS": {
+    #         "CLIENT_CLASS": "django_redis.client.DefaultClient",
+    #         "COMPRESSOR": "django_redis.compressors.zlib.ZlibCompressor",
+    #         "SOCKET_CONNECT_TIMEOUT": 5,  # in seconds
+    #         "SOCKET_TIMEOUT": 5,  # in seconds
+    #         "IGNORE_EXCEPTIONS": True,
+    #     }
+    # }
 }
 
-from .config.redis_cache import *
-
-if USE_REDIS:
-    CACHES['redis'] = REDIS_CHACHE_CONFIG
 
 # Session
 
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
-SESSION_CACHE_ALIAS = 'sessions'  # "redis"
+SESSION_CACHE_ALIAS = 'sessions'
 
 
 # Search
@@ -112,7 +120,7 @@ HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 
 # Logging
 
-from .bin.mail import *
+# from .bin.mail import *
 
 LOGGING = {
     'version': 1,
@@ -145,7 +153,7 @@ LOGGING = {
         'mail_server_errors': {
             'level': 'ERROR',
             'filters': ['require_debug_false'],
-            'class': '%s.config.logging.ServerErrorHandler' % PROJECT_NAME,
+            'class': '%s.settings.logging.ServerErrorHandler' % PROJECT_NAME,
         }
     },
     'loggers': {
@@ -213,7 +221,7 @@ TEMPLATES = [
         'DIRS': [os.path.join(BASE_DIR, 'templates/jinja2'), ],
         'APP_DIRS': True,
         'OPTIONS': {
-            'environment': '%s.jinja2.jinja2.environment' % PROJECT_NAME,
+            'environment': '%s.settings.jinja2.environment' % PROJECT_NAME,
             'extensions': [
                 "jinja2.ext.do",
                 "jinja2.ext.loopcontrols",
@@ -228,7 +236,7 @@ TEMPLATES = [
                 "django_jinja.builtins.extensions.StaticFilesExtension",
                 "django_jinja.builtins.extensions.DjangoFiltersExtension",
 
-                "%s.jinja2.jinja2htmlcompress.HTMLCompress" % PROJECT_NAME,
+                "%s.settings.jinja2htmlcompress.HTMLCompress" % PROJECT_NAME,
             ],
             'context_processors': [
                 "django.template.context_processors.debug",
@@ -248,7 +256,7 @@ WSGI_APPLICATION = '%s.wsgi.application' % PROJECT_NAME
 
 
 # Password validation
-# https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
+# https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -267,6 +275,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 # INTERNATIONALIZATION
+
+from django.utils.translation import ugettext_lazy as _
 
 LANGUAGE_CODE = 'en'
 
@@ -303,4 +313,9 @@ STATICFILES_DIRS = [
 if os.path.isdir(os.path.join(BASE_DIR, 'dist')):
     STATICFILES_DIRS += [
         os.path.join(BASE_DIR, 'dist'),
+    ]
+
+if os.path.isdir(os.path.join(BASE_DIR, 'bower_components')):
+    STATICFILES_DIRS += [
+        os.path.join(BASE_DIR, 'bower_components'),
     ]

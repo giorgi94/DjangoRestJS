@@ -4,7 +4,7 @@
     {{block.super}}
     {# <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.0/semantic.min.css"> #}
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.0/components/table.min.css">
-    <link rel="stylesheet" type="text/css" href="/static/css/admin{{HASH.HASH_CSS}}.css">
+    <link rel="stylesheet" type="text/css" href="/static/tinymce/tinymce.custom.css">
 {% endblock %}
 
 
@@ -16,9 +16,6 @@
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.7.9/tinymce.min.js"></script>
-
-    <script type="text/javascript" src="/static/js/vendor{{HASH.HASH_JS}}.js"></script>
-    {# <script type="text/javascript" src="/static/js/common{{HASH.HASH_JS}}.js"></script> #}
-    <script type="text/javascript" src="/static/js/admin{{HASH.HASH_JS}}.js"></script>
+    <script type="text/javascript" src="/static/tinymce/tinymce.config.js"></script>
 
 {% endblock %}

@@ -1,3 +1,4 @@
+from django.contrib.admin.views.decorators import staff_member_required
 from django.shortcuts import (
     render, redirect, reverse, get_object_or_404)
 from django.http import Http404, JsonResponse
@@ -35,3 +36,9 @@ class BlogSearchView(SearchMixin, generic.TemplateView):
         context = super().get_context_data(**kwargs)
         context['searched_data'] = self.get_searched_data()
         return context
+
+
+@staff_member_required
+def queryCategory(request, **kwargs):
+
+    return JsonResponse({'hello': 'It works'})
