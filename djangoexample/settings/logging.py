@@ -4,6 +4,7 @@ import sys
 import json
 import logging
 import requests
+import datetime as dt
 
 from copy import copy
 from django.core.mail import EmailMessage
@@ -45,32 +46,50 @@ class ServerErrorHandler(logging.Handler):
 
         reporter = ExceptionReporter(request, is_email=True, *exc_info)
         message = "%s\n\n%s" % (self.format(no_exc_record), reporter.get_traceback_text())
-        html_message = reporter.get_traceback_html()
+        # html_message = reporter.get_traceback_html()
 
         message = extract_tags(message)
 
-        # send_message_to_slack(message)
-        # self.send_mail(subject, message, html_message)
-
-    def send_mail(self, subject, message, html_message):
-        try:
-            msg = EmailMessage(
-                subject,
-                html_message,
-                settings.EMAIL_HOST_USER,
-                settings.EMAIL_SERVER_ERROR
-            )
-            msg.content_subtype = "html"
-            msg.send()
-        except Exception as ex:
-            print('Email was not sent')
-            print(ex)
+        self.handler(message)
 
     def format_subject(self, subject):
         """
         Escape CR and LF characters.
         """
         return subject.replace('\n', '\\n').replace('\r', '\\r')
+
+    def handler(self, message):
+        log_to_file(message)
+
+        # send_message_to_slack(message)
+        # send_mail(subject, message)
+
+
+LOGGING_DIR = os.path.join(settings.BASE_DIR, 'logs')
+
+
+def log_to_file(message):
+    date = dt.datetime.now()
+    logname = date.strftime('%Y-%m-%d') + '.log'
+    logpath = os.path.join(LOGGING_DIR, logname)
+
+    with open(logpath, 'a') as f:
+        f.write(message + '\n\n')
+
+
+def send_mail(self, subject, message):
+    try:
+        msg = EmailMessage(
+            subject,
+            message,
+            settings.EMAIL_HOST_USER,
+            settings.EMAIL_SERVER_ERROR
+        )
+        # msg.content_subtype = "html"
+        msg.send()
+    except Exception as ex:
+        print('Email was not sent')
+        print(ex)
 
 
 MESSAGE_TAGS = [

@@ -120,8 +120,6 @@ HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 
 # Logging
 
-# from .bin.mail import *
-
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -150,7 +148,7 @@ LOGGING = {
             'class': 'logging.StreamHandler',
             'formatter': 'django.server',
         },
-        'mail_server_errors': {
+        'handle_server_errors': {
             'level': 'ERROR',
             'filters': ['require_debug_false'],
             'class': '%s.settings.logging.ServerErrorHandler' % PROJECT_NAME,
@@ -158,7 +156,7 @@ LOGGING = {
     },
     'loggers': {
         'django': {
-            'handlers': ['console', 'mail_server_errors'],
+            'handlers': ['console', 'handle_server_errors'],
             'level': 'INFO',
         },
         'django.server': {
