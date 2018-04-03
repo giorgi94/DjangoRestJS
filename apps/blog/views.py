@@ -9,6 +9,9 @@ from django.conf import settings
 from .models import Blog
 
 from apps.search.query import SearchMixin
+from apps.graphQL.schema import schema
+from apps.graphQL.base64enc import encode, decode
+from django.core.cache import cache
 
 
 class IndexView(generic.TemplateView):
@@ -22,10 +25,40 @@ class IndexView(generic.TemplateView):
 
 
 class BlogView(generic.TemplateView):
-    template_name = 'home.html'
+    template_name = 'blog.html'
+
+    def get_object(self):
+        blog = cache.get('BlogNode:23')
+
+        if blog:
+            return blog
+
+        query = '''{{
+                blog(id:"{id}") {{
+                    pk,
+                    title,
+                    content,
+                    commentSet {{
+                        edges {{
+                            node {{
+                                content
+                            }}
+                        }}
+                    }}
+                }}
+            }}'''.format(id=encode('BlogNode:23'))
+
+        blog = schema.execute(query).data
+
+        if blog:
+            blog = blog.get('blog')
+            cache.set('BlogNode:23', blog, timeout=5)
+            return blog
+        return None
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['blog'] = self.get_object()
         return context
 
 

@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'apps.pymedia',
     'apps.user',
     'apps.blog',
+    'apps.rss',
 
     'apps.search',
 ]

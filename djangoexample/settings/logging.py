@@ -9,8 +9,8 @@ import datetime as dt
 from copy import copy
 from django.core.mail import EmailMessage
 from django.views.debug import ExceptionReporter
-
 from django.conf import settings
+from django.contrib.sites.shortcuts import get_current_site
 
 
 class ServerErrorHandler(logging.Handler):
@@ -48,7 +48,12 @@ class ServerErrorHandler(logging.Handler):
         message = "%s\n\n%s" % (self.format(no_exc_record), reporter.get_traceback_text())
         # html_message = reporter.get_traceback_html()
 
-        message = extract_tags(message)
+        try:
+            domain = get_current_site(request).domain
+        except:
+            domain = None
+
+        message = extract_tags(message, domain)
 
         self.handler(message)
 
@@ -117,7 +122,7 @@ MESSAGE_TAGS = [
 ]
 
 
-def extract_tags(message_lines_str):
+def extract_tags(message_lines_str, domain=None):
     message = ""
     append = False
 
@@ -127,6 +132,8 @@ def extract_tags(message_lines_str):
         if tag:
             if tag.group() in MESSAGE_TAGS:
                 append = True
+                if 'Request URL' in line and domain:
+                    line = re.sub(r'://.*?/', '://' + domain + '/', line)
                 message += line.strip() + '\n'
             else:
                 append = False
