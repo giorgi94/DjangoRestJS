@@ -31,6 +31,8 @@ INSTALLED_APPS = [
     'django_jinja',
     'graphene_django',
     'haystack',
+    'channels',
+
 
     # Custom apps
     'apps.pymedia',
@@ -38,6 +40,8 @@ INSTALLED_APPS = [
     'apps.blog',
     'apps.rss',
 
+
+    'apps.chat',
     'apps.search',
 ]
 
@@ -70,6 +74,16 @@ if DEBUG and DEBUG_TOOLS:
         '127.0.0.1',
     ]
 
+# Channels
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "asgi_redis.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": ['redis://127.0.0.1:6379/0'],
+        },
+    },
+}
 
 # Caches
 
