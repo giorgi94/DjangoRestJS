@@ -76,9 +76,11 @@ if DEBUG and DEBUG_TOOLS:
 
 # Channels
 
+ASGI_APPLICATION = "apps.chat.routing.application"
+
 CHANNEL_LAYERS = {
     "default": {
-        "BACKEND": "asgi_redis.RedisChannelLayer",
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
             "hosts": ['redis://127.0.0.1:6379/0'],
         },

@@ -36,8 +36,7 @@ pymongo==3.6.0
 
 # socket
 channels==2.0.2
-asgi-redis==1.4.3
-asgiref==1.1.0
+channels-redis==2.1.1
 
 # search
 Whoosh==2.7.4
