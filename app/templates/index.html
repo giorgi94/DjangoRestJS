@@ -1,0 +1,26 @@
+{% load i18n %}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>This is test</title>
+</head>
+<body>
+
+    <h1>{% trans 'March' %}</h1>
+
+    <form action="{% url 'register' %}" method="GET">
+        <input type="text" name="name">
+        <button>Submit</button>
+    </form>
+
+    <ul>
+        
+    {% for name in names %}
+    <li>{{name}}</li>
+    {% endfor %}
+    </ul>
+
+</body>
+</html>

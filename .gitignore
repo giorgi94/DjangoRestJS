@@ -1,0 +1,36 @@
+/__pycache__/
+*.py[cod]
+*$py.class
+*.sqlite3
+*.rdb
+
+redis.conf
+
+.lhistory
+.bash_history
+uwsgi_logs.txt
+
+/static/
+hash/
+dist/
+media/
+locale/
+logs/
+cache/
+env/
+
+templates/jinja2/
+whoosh_index/
+
+migrations
+
+# envinfo.py
+
+.DS_Store
+
+# node files
+node_modules/
+node_modules
+npm-debug.log
+bower_components
+package-lock.json
