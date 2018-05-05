@@ -1,0 +1,43 @@
+# 1
+Django
+
+# 2
+django-admin-sortable2
+django-debug-toolbar
+Jinja2
+redis
+django-jinja
+django-redis
+
+
+# 3
+djangorestframework
+graphene-django
+django-graphiql
+graphene
+graphql-core
+graphql-relay
+
+# 4
+Pillow
+pytz
+requests
+Unidecode
+
+# 5
+asyncio
+beautifulsoup4
+PyJWT
+cryptography
+
+# 6
+PyMySQL
+pymongo
+
+# flask
+Flask
+Flask-SocketIO
+
+# search
+Whoosh
+django-haystack
